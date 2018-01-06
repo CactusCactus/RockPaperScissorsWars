@@ -90,7 +90,7 @@
             android:gravity="bottom"
             android:orientation="vertical">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/enemy_rock_btn"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
@@ -116,7 +116,7 @@
             android:gravity="bottom"
             android:orientation="vertical">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/enemy_paper_btn"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
@@ -139,7 +139,7 @@
             android:gravity="bottom"
             android:orientation="vertical">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/enemy_scissors_btn"
                 android:layout_width="64dp"
                 android:layout_height="64dp"

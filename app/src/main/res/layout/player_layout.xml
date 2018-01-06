@@ -31,9 +31,8 @@
                 android:id="@+id/player_rock_btn"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:background="@null"
-                android:scaleType="fitXY"
-                android:src="@drawable/rock" />
+                android:background="@drawable/rock_button"
+                android:scaleType="fitXY" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,9 +54,8 @@
                 android:id="@+id/player_paper_btn"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@null"
-                android:scaleType="fitXY"
-                android:src="@drawable/paper" />
+                android:background="@drawable/paper_button"
+                android:scaleType="fitXY" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,9 +76,8 @@
                 android:id="@+id/player_scissors_btn"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@null"
-                android:scaleType="fitXY"
-                android:src="@drawable/scissors" />
+                android:background="@drawable/scissors_button"
+                android:scaleType="fitXY" />
         </LinearLayout>
 
 

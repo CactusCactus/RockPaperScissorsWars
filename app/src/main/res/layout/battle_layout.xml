@@ -10,8 +10,7 @@
             android:id="@+id/quit_btn"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_quit"
-            android:background="@null"
+            android:background="@drawable/quit_button"
             android:scaleType="fitCenter"
             android:layout_weight="0.05"/>
         <LinearLayout
@@ -30,7 +29,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <TextView
-            android:id="@+id/geme_timer"
+            android:id="@+id/game_timer"
             android:padding="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
