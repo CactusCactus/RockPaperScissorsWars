@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.jakub.rockpaperscissorswars.MenuActivity"
     android:background="@color/colorPrimary">
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="32sp"/>
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="250dp"

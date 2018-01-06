@@ -5,6 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,7 +21,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     Button warriorScreenBtn;
     @BindView(R.id.options_btn)
     Button optionsBtn;
-
+    @BindView(R.id.username)
+    TextView usernameLabel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +34,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         startGameBtn.setOnClickListener(this);
         warriorScreenBtn.setOnClickListener(this);
         optionsBtn.setOnClickListener(this);
+        initFirebaseUser();
     }
-
+    private void initFirebaseUser() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        usernameLabel.setText(user.getEmail());
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

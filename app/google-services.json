@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "128129297759",
+    "firebase_url": "https://rockpaperscissorswars.firebaseio.com",
+    "project_id": "rockpaperscissorswars",
+    "storage_bucket": "rockpaperscissorswars.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128129297759:android:0a02ab218b73e290",
+        "android_client_info": {
+          "package_name": "com.jakub.rockpaperscissorswars"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "128129297759-fv397rm9g6dovbek47kgk7qikf5gtiqj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jakub.rockpaperscissorswars",
+            "certificate_hash": "ba883337279a80c258481e8ee1df8294c9e3f239"
+          }
+        },
+        {
+          "client_id": "128129297759-muitb21db5ffp4dc21j7j3hvtdl3jaqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgIUoucPMReETwyeVUwkTVnMayATC92X8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "128129297759-muitb21db5ffp4dc21j7j3hvtdl3jaqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
