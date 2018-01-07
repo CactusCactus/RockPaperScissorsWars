@@ -8,4 +8,7 @@
     <string name="confirm">Potwierdź</string>
     <string name="choose_weapon_info">Wybrana broń podniesie na początek jej siłę, poprzez zdobywanie kolejnych poziomów będziesz w stanie również podnośić siłę innych broni</string>
     <string name="choose_name">Wybierz imię wojownika</string>
+    <string name="select_name_and_weapon">Podaj imię postaci i wybierz broń</string>
+    <string name="error_db_connection">Błąd połączenia z bazą danych</string>
+    <string name="error_auth">Authentication Failed.</string>
 </resources>

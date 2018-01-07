@@ -1,26 +1,34 @@
-package com.jakub.rockpaperscissorswars;
+package com.jakub.rockpaperscissorswars.models;
+
+import com.jakub.rockpaperscissorswars.constants.AppConstants;
+
+import org.parceler.Parcel;
 
 /**
  * Created by Emil on 2018-01-06.
  */
-
+@Parcel(Parcel.Serialization.BEAN)
 public class User {
-    private String email;
-    private String username;
-    private int experience;
-    private int rockVal;
-    private int paperVal;
-    private int scissorsVal;
-    private int health;
-    private int defence;
-    private int victories;
+    public String email;
+    public String username;
+    public int lvl;
+    public int experience;
+    public int rockVal;
+    public int paperVal;
+    public int scissorsVal;
+    public int health;
+    public int defence;
+    public int victories;
 
+    //Pusty konstruktor dla parcelera
     public User() {
     }
 
-    public User(String email, String username, int experience, int rockVal, int paperVal, int scissorsVal, int health, int defence, int victories) {
+    //Kompletny konstruktor
+    public User(String email, String username, int lvl, int experience, int rockVal, int paperVal, int scissorsVal, int health, int defence, int victories) {
         this.email = email;
         this.username = username;
+        this.lvl = lvl;
         this.experience = experience;
         this.rockVal = rockVal;
         this.paperVal = paperVal;
@@ -28,6 +36,20 @@ public class User {
         this.health = health;
         this.defence = defence;
         this.victories = victories;
+    }
+
+    //Dla nowych użytkowników
+    public User(String email, String username, int rockVal, int paperVal, int scissorsVal) {
+        this.email = email;
+        this.username = username;
+        this.lvl = 1;
+        this.experience = 0;
+        this.rockVal = rockVal;
+        this.paperVal = paperVal;
+        this.scissorsVal = scissorsVal;
+        this.health = AppConstants.DEFAULT_HEALTH;
+        this.defence = AppConstants.DEFAULT_DEFENCE;
+        this.victories = 0;
     }
 
     public String getEmail() {
@@ -100,5 +122,13 @@ public class User {
 
     public void setVictories(int victories) {
         this.victories = victories;
+    }
+
+    public int getLvl() {
+        return lvl;
+    }
+
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
     }
 }

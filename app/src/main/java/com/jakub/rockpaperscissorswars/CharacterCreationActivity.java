@@ -6,26 +6,28 @@ import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.jakub.rockpaperscissorswars.constants.AppConstants;
+import com.jakub.rockpaperscissorswars.constants.AttackType;
+import com.jakub.rockpaperscissorswars.models.User;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CharacterCreationActivity extends AppCompatActivity {
-
+    //TODO sprawdzaj istnienie nicku
     private static final String TAG = CharacterCreationActivity.class.getCanonicalName();
     @BindView(R.id.email_label)
     TextView emailLabel;
@@ -81,21 +83,21 @@ public class CharacterCreationActivity extends AppCompatActivity {
         String username = usernameInput.getText().toString();
         if (selectedType != null && !username.isEmpty() && user.getEmail() != null) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().getRoot();
-            User newUser = new User(user.getEmail(), username, 0,
-                    getStat(AttackType.ROCK), getStat(AttackType.PAPER), getStat(AttackType.SCISSORS),
-                    AppConstants.DEFAULT_HEALTH, AppConstants.DEFAULT_DEFENCE, 0);
+            final User newUser = new User(user.getEmail(), username,
+                    getStat(AttackType.ROCK), getStat(AttackType.PAPER), getStat(AttackType.SCISSORS));
             mDatabase.child(AppConstants.DB_USERS).child(username).setValue(newUser)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
                             Intent intent = new Intent(CharacterCreationActivity.this, MenuActivity.class);
+                            intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(newUser));
                             startActivity(intent);
                         }
                     }
                 });
         } else {
-            Snackbar.make(usernameInput, "Podaj imię postaci i wybierz broń", BaseTransientBottomBar.LENGTH_SHORT).show();
+            Snackbar.make(usernameInput, R.string.select_name_and_weapon, BaseTransientBottomBar.LENGTH_SHORT).show();
         }
     }
 
@@ -123,5 +125,11 @@ public class CharacterCreationActivity extends AppCompatActivity {
                 scissorsBtn.setImageResource(R.drawable.scissors_red);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FirebaseAuth.getInstance().signOut();
     }
 }
