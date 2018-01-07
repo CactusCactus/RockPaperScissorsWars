@@ -1,8 +1,10 @@
 package com.jakub.rockpaperscissorswars;
 
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.AttackType;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
+import com.jakub.rockpaperscissorswars.utils.Utils;
 
 import org.parceler.Parcels;
 
@@ -77,6 +80,9 @@ public class GameActivity extends AppCompatActivity {
     @BindView(R.id.enemy_buttons_layout)
     LinearLayout enemyButtonsLayout;
 
+    @BindView(R.id.main_label)
+    TextView mainLabel;
+
     private Battle currentBattle;
     private DatabaseReference battleRef;
     private User playerUser;
@@ -125,17 +131,19 @@ public class GameActivity extends AppCompatActivity {
         movePossible = isFirstPlayer;
         toggleButtonsLock(movePossible);
     }
-    //Aktualizowanie po kazdym sygnale+99
+
+    //Aktualizowanie po kazdym sygnale
     private void updateBattleField() {
         AttackType playerAttackType = isFirstPlayer ? currentBattle.getFirstPlayerMove() : currentBattle.getSecondPlayerMove();
         AttackType enemyAttackType = isFirstPlayer ? currentBattle.getSecondPlayerMove() : currentBattle.getFirstPlayerMove();
-        if(playerAttackType != null) {
-            playerBattleField.setImageDrawable(getDrawable(playerAttackType));
-        }
+        playerBattleField.setImageDrawable(getDrawable(playerAttackType, false));
         if(enemyAttackType != null) {
-            enemyBattleField.setImageDrawable(getDrawable(enemyAttackType));
+            enemyBattleField.setImageDrawable(getDrawable(R.drawable.question_sign));
+        } else {
+            enemyBattleField.setImageDrawable(null);
         }
     }
+
     private void toggleButtonsLock(boolean enabled) {
         playerRockBtn.setEnabled(enabled);
         playerPaperBtn.setEnabled(enabled);
@@ -157,6 +165,9 @@ public class GameActivity extends AppCompatActivity {
                     movePossible = isMovePossible();
                     updateBattleField();
                     toggleButtonsLock(movePossible);
+                    calculateVictory();
+                } else {
+                    finish();
                 }
             }
 
@@ -168,6 +179,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private boolean isMovePossible() {
+        if (currentBattle.getFirstPlayerMove() == null && currentBattle.getSecondPlayerMove() == null)
+            return isFirstPlayer;
         return (isFirstPlayer && currentBattle.getFirstPlayerMove() == null) || (!isFirstPlayer && currentBattle.getSecondPlayerMove() == null);
     }
 
@@ -203,15 +216,53 @@ public class GameActivity extends AppCompatActivity {
         battleRef.setValue(currentBattle);
         toggleButtonsLock(false);
     }
+    @OnClick(R.id.quit_btn)
+    public void onQuitBtnClick() {
+        onBackPressed();
+    }
+    private void calculateVictory() {
+        if (currentBattle.getFirstPlayerMove() != null && currentBattle.getSecondPlayerMove() != null) {
+            AttackType enemyAttackType = isFirstPlayer ? currentBattle.getSecondPlayerMove() : currentBattle.getFirstPlayerMove();
+            enemyBattleField.setImageDrawable(getDrawable(enemyAttackType, false));
+            User firstPlayer = currentBattle.getFirstPlayer();
+            User secondPlayer = currentBattle.getSecondPlayer();
+            int result = Utils.whoWon(currentBattle.getFirstPlayerMove(), currentBattle.getSecondPlayerMove());
+            mainLabel.setVisibility(View.VISIBLE);
+            if (result == 1) {
+                if(isFirstPlayer) playerBattleField.setImageDrawable(getDrawable(currentBattle.getFirstPlayerMove(), true));
+                else enemyBattleField.setImageDrawable(getDrawable(currentBattle.getFirstPlayerMove(), true));
+                String s = firstPlayer.getUsername() + " " + getString(R.string.won) + "!";
+                mainLabel.setText(s);
+            } else if (result == -1) {
+                if(!isFirstPlayer) playerBattleField.setImageDrawable(getDrawable(currentBattle.getSecondPlayerMove(), true));
+                else enemyBattleField.setImageDrawable(getDrawable(currentBattle.getSecondPlayerMove(), true));
+                String s = secondPlayer.getUsername() + " " + getString(R.string.won) + "!";
+                mainLabel.setText(s);
+            } else {
+                mainLabel.setText(R.string.draw);
+            }
+            currentBattle.setFirstPlayerMove(null);
+            currentBattle.setSecondPlayerMove(null);
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mainLabel.setVisibility(View.GONE);
+                battleRef.setValue(currentBattle);
+            }
+        }, 4000);
 
-    private Drawable getDrawable(AttackType type) {
+    }
+
+    private Drawable getDrawable(AttackType type, boolean red) {
+        if (type == null) return null;
         switch (type) {
             case ROCK:
-                return getDrawable(R.drawable.rock);
+                return red ? getDrawable(R.drawable.rock_red) : getDrawable(R.drawable.rock);
             case PAPER:
-                return getDrawable(R.drawable.paper);
+                return red ? getDrawable(R.drawable.paper_red) : getDrawable(R.drawable.paper);
             case SCISSORS:
-                return getDrawable(R.drawable.scissors);
+                return red ? getDrawable(R.drawable.scissors_red) : getDrawable(R.drawable.scissors);
             default:
                 return null;
         }

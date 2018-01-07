@@ -19,7 +19,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1.5"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="10dp">
             <ImageView
                 android:id="@+id/enemy_battle_field"
                 android:layout_width="94dp"
@@ -50,5 +51,10 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@color/opaque_gray"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 </RelativeLayout>

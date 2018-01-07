@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/player_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/player_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/player_buttons_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/very_light_gray"
         android:gravity="center"
-        android:padding="8dp"
-        android:background="@color/very_light_gray">
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="64dp"
@@ -87,12 +87,13 @@
         android:id="@+id/player_info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/dark_gray">
+        android:background="@color/dark_gray"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="3dp">
 
             <TextView
                 android:id="@+id/player_lvl_label"
@@ -102,7 +103,8 @@
                 android:gravity="center_horizontal"
                 android:maxLines="1"
                 android:text="PLAYER_LVL"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/player_name_label"
@@ -112,7 +114,8 @@
                 android:gravity="center_horizontal"
                 android:maxLines="1"
                 android:text="PLAYER_NAME"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -120,6 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -129,20 +133,22 @@
             android:id="@+id/player_health_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:maxLines="1"
-            android:text="VAL/VAL"
-            android:layout_marginStart="5dp"/>
+            android:text="VAL/VAL" />
 
         <View
             android:layout_width="100dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp" />
+
         <TextView
             android:id="@+id/player_defence_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:maxLines="1"
-            android:text="VAL/VAL"
-            android:layout_marginEnd="5dp"/>
+            android:text="VAL/VAL" />
+
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"

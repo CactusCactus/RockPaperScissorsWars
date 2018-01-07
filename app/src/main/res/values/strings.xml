@@ -11,4 +11,6 @@
     <string name="select_name_and_weapon">Podaj imię postaci i wybierz broń</string>
     <string name="error_db_connection">Błąd połączenia z bazą danych</string>
     <string name="error_auth">Authentication Failed.</string>
+    <string name="won">wygral</string>
+    <string name="draw">Draw</string>
 </resources>
