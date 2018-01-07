@@ -9,16 +9,16 @@ import org.parceler.Parcel;
  */
 @Parcel(Parcel.Serialization.BEAN)
 public class User {
-    public String email;
-    public String username;
-    public int lvl;
-    public int experience;
-    public int rockVal;
-    public int paperVal;
-    public int scissorsVal;
-    public int health;
-    public int defence;
-    public int victories;
+    private String email;
+    private String username;
+    private int lvl;
+    private int experience;
+    private int rockVal;
+    private int paperVal;
+    private int scissorsVal;
+    private int health;
+    private int defence;
+    private int victories;
 
     //Pusty konstruktor dla parcelera
     public User() {

@@ -24,6 +24,8 @@ import com.jakub.rockpaperscissorswars.utils.Utils;
 
 import org.parceler.Parcels;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -83,6 +85,16 @@ public class GameActivity extends AppCompatActivity {
     @BindView(R.id.main_label)
     TextView mainLabel;
 
+    @BindView(R.id.player_health_layout)
+    LinearLayout playerHealthLayout;
+    @BindView(R.id.player_defence_layout)
+    LinearLayout playerDefenceLayout;
+
+    @BindView(R.id.enemy_health_layout)
+    LinearLayout enemyHealthLayout;
+    @BindView(R.id.enemy_defence_layout)
+    LinearLayout enemyDefenceLayout;
+
     private Battle currentBattle;
     private DatabaseReference battleRef;
     private User playerUser;
@@ -115,16 +127,17 @@ public class GameActivity extends AppCompatActivity {
     private void updateFieldsInit() {
         playerNameLabel.setText(playerUser.getUsername());
         playerLvlLabel.setText(String.valueOf(playerUser.getLvl()));
-        playerHealthVal.setText(String.valueOf(isFirstPlayer ? currentBattle.getFirstPlayerHp() : currentBattle.getSecondPlayerHp()));
-        playerDefenceVal.setText(String.valueOf(playerUser.getDefence()));
+        playerHealthVal.setText(getPlayerHealth());
+        playerDefenceVal.setText(String.valueOf(playerUser.getDefence()) + "%");
         playerRockVal.setText(String.valueOf(playerUser.getRockVal()));
         playerPaperVal.setText(String.valueOf(playerUser.getPaperVal()));
         playerScissorsVal.setText(String.valueOf(playerUser.getScissorsVal()));
 
         enemyNameLabel.setText(enemyUser.getUsername());
         enemyLvlLabel.setText(String.valueOf(enemyUser.getLvl()));
-        enemyHealthVal.setText(String.valueOf(isFirstPlayer ? currentBattle.getSecondPlayerHp() : currentBattle.getFirstPlayerHp()));
-        enemyDefenceVal.setText(String.valueOf(enemyUser.getDefence()));
+
+        enemyHealthVal.setText(getEnemyHealth());
+        enemyDefenceVal.setText(String.valueOf(enemyUser.getDefence()) + "%");
         enemyRockVal.setText(String.valueOf(enemyUser.getRockVal()));
         enemyPaperVal.setText(String.valueOf(enemyUser.getPaperVal()));
         enemyScissorsVal.setText(String.valueOf(enemyUser.getScissorsVal()));
@@ -224,36 +237,135 @@ public class GameActivity extends AppCompatActivity {
         if (currentBattle.getFirstPlayerMove() != null && currentBattle.getSecondPlayerMove() != null) {
             AttackType enemyAttackType = isFirstPlayer ? currentBattle.getSecondPlayerMove() : currentBattle.getFirstPlayerMove();
             enemyBattleField.setImageDrawable(getDrawable(enemyAttackType, false));
-            User firstPlayer = currentBattle.getFirstPlayer();
-            User secondPlayer = currentBattle.getSecondPlayer();
             int result = Utils.whoWon(currentBattle.getFirstPlayerMove(), currentBattle.getSecondPlayerMove());
+            displayResult(result);
+            setAndDisplayDamage(result);
+            playerHealthVal.setText(getPlayerHealth());
+            enemyHealthVal.setText(getEnemyHealth());
             mainLabel.setVisibility(View.VISIBLE);
-            if (result == 1) {
-                if(isFirstPlayer) playerBattleField.setImageDrawable(getDrawable(currentBattle.getFirstPlayerMove(), true));
-                else enemyBattleField.setImageDrawable(getDrawable(currentBattle.getFirstPlayerMove(), true));
-                String s = firstPlayer.getUsername() + " " + getString(R.string.won) + "!";
-                mainLabel.setText(s);
-            } else if (result == -1) {
-                if(!isFirstPlayer) playerBattleField.setImageDrawable(getDrawable(currentBattle.getSecondPlayerMove(), true));
-                else enemyBattleField.setImageDrawable(getDrawable(currentBattle.getSecondPlayerMove(), true));
-                String s = secondPlayer.getUsername() + " " + getString(R.string.won) + "!";
-                mainLabel.setText(s);
-            } else {
-                mainLabel.setText(R.string.draw);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    currentBattle.setFirstPlayerMove(null);
+                    currentBattle.setSecondPlayerMove(null);
+                    mainLabel.setVisibility(View.GONE);
+                    battleRef.setValue(currentBattle);
+                    resetHealthAndDefenceColors();
+                }
+            }, 3000);
+            boolean gameOver = false;
+            if(currentBattle.getFirstPlayerHp() <=0 && currentBattle.getSecondPlayerHp() <= 0) {
+                mainLabel.setText("Oboje zgineliscie :ccc");
+                toggleButtonsLock(false);
+                gameOver = true;
+            } else if(currentBattle.getFirstPlayerHp() <= 0) {
+                mainLabel.setText(currentBattle.getFirstPlayer().getUsername() + "  Umiera :c");
+                toggleButtonsLock(false);
+                gameOver = true;
+            } else if (currentBattle.getSecondPlayerHp() <= 0) {
+                mainLabel.setText(currentBattle.getSecondPlayer().getUsername() + "  Umiera :c");
+                toggleButtonsLock(false);
+                gameOver = true;
             }
-            currentBattle.setFirstPlayerMove(null);
-            currentBattle.setSecondPlayerMove(null);
+            if(gameOver) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 7000);
+            }
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mainLabel.setVisibility(View.GONE);
-                battleRef.setValue(currentBattle);
-            }
-        }, 4000);
-
     }
-
+    private void displayResult(int result) {
+        User firstPlayer = currentBattle.getFirstPlayer();
+        User secondPlayer = currentBattle.getSecondPlayer();
+        if (result == 1) {
+            if(isFirstPlayer) playerBattleField.setImageDrawable(getDrawable(currentBattle.getFirstPlayerMove(), true));
+            else enemyBattleField.setImageDrawable(getDrawable(currentBattle.getFirstPlayerMove(), true));
+            String s = firstPlayer.getUsername() + " " + getString(R.string.won) + "!";
+            mainLabel.setText(s);
+        } else if (result == -1) {
+            if(!isFirstPlayer) playerBattleField.setImageDrawable(getDrawable(currentBattle.getSecondPlayerMove(), true));
+            else enemyBattleField.setImageDrawable(getDrawable(currentBattle.getSecondPlayerMove(), true));
+            String s = secondPlayer.getUsername() + " " + getString(R.string.won) + "!";
+            mainLabel.setText(s);
+        } else {
+            mainLabel.setText(R.string.draw);
+        }
+    }
+    private void setAndDisplayDamage(int result) {
+        Random random = new Random();
+        int randomNum = random.nextInt(100) + 1;
+        if(result == 1) {
+            if(randomNum > currentBattle.getSecondPlayer().getDefence()) {
+                int damage = Utils.getDamage(currentBattle.getFirstPlayer(), currentBattle.getFirstPlayerMove());
+                currentBattle.setSecondPlayerHp(currentBattle.getSecondPlayerHp() - damage);
+                displayDamage(result);
+            } else {
+                displayBlock(1);
+            }
+        } else if (result == -1) {
+            if(randomNum > currentBattle.getFirstPlayer().getDefence()) {
+                int damage = Utils.getDamage(currentBattle.getSecondPlayer(), currentBattle.getSecondPlayerMove());
+                currentBattle.setFirstPlayerHp(currentBattle.getFirstPlayerHp() - damage);
+                displayDamage(result);
+            } else {
+                displayBlock(-1);
+            }
+        } else {
+            int firstPlayerDamage = Utils.getDamage(currentBattle.getFirstPlayer(), currentBattle.getFirstPlayerMove());
+            int secondPlayerDamage = Utils.getDamage(currentBattle.getSecondPlayer(), currentBattle.getSecondPlayerMove());
+            firstPlayerDamage = (int) ((double) firstPlayerDamage / 2);
+            secondPlayerDamage = (int) ((double) secondPlayerDamage / 2);
+            if(randomNum > currentBattle.getSecondPlayer().getDefence()) {
+                currentBattle.setSecondPlayerHp(currentBattle.getSecondPlayerHp() - firstPlayerDamage);
+                displayDamage(1);
+            } else {
+                displayBlock(1);
+            }
+            if(randomNum > currentBattle.getFirstPlayer().getDefence()) {
+                currentBattle.setFirstPlayerHp(currentBattle.getFirstPlayerHp() - secondPlayerDamage);
+                displayDamage(-1);
+            } else {
+                displayBlock(-1);
+            }
+        }
+    }
+    private void displayDamage(int result) {
+        switch (result) {
+            case 1:
+                if(isFirstPlayer) toggleEnemyHealthColor(true);
+                else togglePlayerHealthColor(true);
+                break;
+            case -1:
+                if(!isFirstPlayer) toggleEnemyHealthColor(true);
+                else togglePlayerHealthColor(true);
+                break;
+            case 0:
+                togglePlayerHealthColor(true);
+                toggleEnemyHealthColor(true);
+                break;
+        }
+    }
+    private void displayBlock(int result) {
+        switch (result) {
+            case 1:
+                if(isFirstPlayer) toggleEnemyDefenceColor(true);
+                else togglePlayerDefenceColor(true);
+                break;
+            case -1:
+                if(!isFirstPlayer) toggleEnemyDefenceColor(true);
+                else togglePlayerDefenceColor(true);
+                break;
+            case 0:
+                togglePlayerDefenceColor(true);
+                toggleEnemyDefenceColor(true);
+                break;
+        }
+    }
     private Drawable getDrawable(AttackType type, boolean red) {
         if (type == null) return null;
         switch (type) {
@@ -267,7 +379,24 @@ public class GameActivity extends AppCompatActivity {
                 return null;
         }
     }
-
+    private void togglePlayerHealthColor(boolean red) {
+        playerHealthLayout.setBackgroundColor(red ? getResources().getColor(R.color.light_red) : getResources().getColor(R.color.white));
+    }
+    private void toggleEnemyHealthColor(boolean red) {
+        enemyHealthLayout.setBackgroundColor(red ? getResources().getColor(R.color.light_red) : getResources().getColor(R.color.white));
+    }
+    private void togglePlayerDefenceColor(boolean red) {
+        playerDefenceLayout.setBackgroundColor(red ? getResources().getColor(R.color.light_red) : getResources().getColor(R.color.white));
+    }
+    private void toggleEnemyDefenceColor(boolean red) {
+        enemyDefenceLayout.setBackgroundColor(red ? getResources().getColor(R.color.light_red) : getResources().getColor(R.color.white));
+    }
+    private void resetHealthAndDefenceColors() {
+        togglePlayerHealthColor(false);
+        togglePlayerDefenceColor(false);
+        toggleEnemyHealthColor(false);
+        toggleEnemyDefenceColor(false);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -282,5 +411,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         battleRef.removeValue();
+    }
+    private String getPlayerHealth() {
+        return String.valueOf(isFirstPlayer ? currentBattle.getFirstPlayerHp() : currentBattle.getSecondPlayerHp() + "/" +
+                String.valueOf(isFirstPlayer ? currentBattle.getFirstPlayer().getHealth() : currentBattle.getSecondPlayer().getHealth()));
+    }
+    private String getEnemyHealth() {
+        return String.valueOf(isFirstPlayer ? currentBattle.getSecondPlayerHp() : currentBattle.getFirstPlayerHp()) + "/" +
+                String.valueOf(isFirstPlayer ? currentBattle.getSecondPlayer().getHealth() : currentBattle.getFirstPlayer().getHealth());
     }
 }

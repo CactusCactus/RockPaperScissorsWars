@@ -1,6 +1,7 @@
 package com.jakub.rockpaperscissorswars.utils;
 
 import com.jakub.rockpaperscissorswars.constants.AttackType;
+import com.jakub.rockpaperscissorswars.models.User;
 
 /**
  * Created by Emil on 2018-01-07.
@@ -44,6 +45,14 @@ public class Utils {
                 }
             default:
                 return 0;
+        }
+    }
+    public static int getDamage(User user, AttackType attackType) {
+        switch (attackType) {
+            case ROCK: return user.getRockVal();
+            case PAPER: return user.getPaperVal();
+            case SCISSORS: return user.getScissorsVal();
+            default: return 0;
         }
     }
 }

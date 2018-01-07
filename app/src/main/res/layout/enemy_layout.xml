@@ -10,36 +10,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
+        <LinearLayout
+            android:id="@+id/enemy_health_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_health" />
 
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_health" />
-
-        <TextView
-            android:id="@+id/enemy_health_val"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:maxLines="1"
-            android:text="VAL/VAL" />
-
-        <View
-            android:layout_width="100dp"
-            android:layout_height="0dp" />
-
-        <TextView
-            android:id="@+id/enemy_defence_val"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:maxLines="1"
-            android:text="VAL/VAL" />
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_defence" />
+            <TextView
+                android:id="@+id/enemy_health_val"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:maxLines="1"
+                android:text="VAL/VAL" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/enemy_defence_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="end">
+            <TextView
+                android:id="@+id/enemy_defence_val"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:maxLines="1"
+                android:text="VAL/VAL"
+                android:gravity="end"/>
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_defence" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
