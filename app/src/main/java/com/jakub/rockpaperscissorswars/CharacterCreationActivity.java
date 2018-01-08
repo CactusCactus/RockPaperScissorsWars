@@ -103,7 +103,7 @@ public class CharacterCreationActivity extends AppCompatActivity {
 
     private int getStat(AttackType type) {
         if (type.equals(selectedType))
-            return AppConstants.BASE_STAT + AppConstants.CHOOSEN_WEAPON_BONUS;
+            return AppConstants.BASE_STAT + AppConstants.CHOSEN_WEAPON_BONUS;
         else return AppConstants.BASE_STAT;
     }
 

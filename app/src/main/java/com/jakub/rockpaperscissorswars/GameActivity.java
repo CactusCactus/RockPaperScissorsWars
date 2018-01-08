@@ -1,5 +1,6 @@
 package com.jakub.rockpaperscissorswars;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -180,7 +181,7 @@ public class GameActivity extends AppCompatActivity {
                     toggleButtonsLock(movePossible);
                     calculateVictory();
                 } else {
-                    finish();
+                    //finish();
                 }
             }
 
@@ -264,16 +265,24 @@ public class GameActivity extends AppCompatActivity {
                 mainLabel.setText(currentBattle.getFirstPlayer().getUsername() + "  Umiera :c");
                 toggleButtonsLock(false);
                 gameOver = true;
+                currentBattle.setWinner(currentBattle.getSecondPlayer());
+                currentBattle.setLoser(currentBattle.getFirstPlayer());
             } else if (currentBattle.getSecondPlayerHp() <= 0) {
                 mainLabel.setText(currentBattle.getSecondPlayer().getUsername() + "  Umiera :c");
                 toggleButtonsLock(false);
                 gameOver = true;
+                currentBattle.setWinner(currentBattle.getFirstPlayer());
+                currentBattle.setLoser(currentBattle.getSecondPlayer());
             }
             if(gameOver) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        finish();
+                        Intent intent = new Intent();
+                        intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(currentBattle));
+                        intent.putExtra(AppConstants.FIRST_PLAYER_EXTRA, isFirstPlayer);
+                        GameActivity.this.setResult(441, intent);
+                        GameActivity.this.finish();
                     }
                 }, 7000);
             }

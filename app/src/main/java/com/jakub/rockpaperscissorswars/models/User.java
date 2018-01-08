@@ -13,6 +13,8 @@ public class User {
     private String username;
     private int lvl;
     private int experience;
+    private int experienceToNextLvl;
+    private int skillPoints;
     private int rockVal;
     private int paperVal;
     private int scissorsVal;
@@ -130,5 +132,21 @@ public class User {
 
     public void setLvl(int lvl) {
         this.lvl = lvl;
+    }
+
+    public int getSkillPoints() {
+        return skillPoints;
+    }
+
+    public void setSkillPoints(int skillPoints) {
+        this.skillPoints = skillPoints;
+    }
+
+    public int getExperienceToNextLvl() {
+        return experienceToNextLvl;
+    }
+
+    public void setExperienceToNextLvl(int experienceToNextLvl) {
+        this.experienceToNextLvl = experienceToNextLvl;
     }
 }

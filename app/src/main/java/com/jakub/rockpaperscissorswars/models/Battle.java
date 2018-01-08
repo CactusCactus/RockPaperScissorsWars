@@ -15,6 +15,10 @@ public class Battle {
     private int secondPlayerHp;
     private AttackType firstPlayerMove;
     private AttackType secondPlayerMove;
+    private User winner;
+    private User loser;
+    private boolean firstPlayerFinished;  //TODO a może nie xd
+    private boolean secondPlayerFinished; //TODO
 
     public Battle() {
     }
@@ -74,5 +78,37 @@ public class Battle {
 
     public void setSecondPlayerMove(AttackType secondPlayerMove) {
         this.secondPlayerMove = secondPlayerMove;
+    }
+
+    public User getWinner() {
+        return winner;
+    }
+
+    public void setWinner(User winner) {
+        this.winner = winner;
+    }
+
+    public User getLoser() {
+        return loser;
+    }
+
+    public void setLoser(User loser) {
+        this.loser = loser;
+    }
+
+    public boolean isFirstPlayerFinished() {
+        return firstPlayerFinished;
+    }
+
+    public void setFirstPlayerFinished(boolean firstPlayerFinished) {
+        this.firstPlayerFinished = firstPlayerFinished;
+    }
+
+    public boolean isSecondPlayerFinished() {
+        return secondPlayerFinished;
+    }
+
+    public void setSecondPlayerFinished(boolean secondPlayerFinished) {
+        this.secondPlayerFinished = secondPlayerFinished;
     }
 }

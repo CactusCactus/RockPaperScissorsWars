@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RockPaperScissorsWars</string>
+    <string name="app_name">Rock Paper Scissors Wars</string>
     <string name="fight">Walcz</string>
     <string name="warrior">Wojownik</string>
     <string name="settings">Settings</string>
@@ -13,4 +13,11 @@
     <string name="error_auth">Authentication Failed.</string>
     <string name="won">wygral</string>
     <string name="draw">Draw</string>
+    <string name="level">Poziom</string>
+    <string name="experience">Doświadczenie</string>
+    <string name="victories">Victories</string>
+    <string name="skillpoints">Punkty umiejętności</string>
+    <string name="progress_to_next_lvl">Postęp do następnego poziomu</string>
+    <string name="win">Wygrana</string>
+    <string name="defeat">Przegrana</string>
 </resources>

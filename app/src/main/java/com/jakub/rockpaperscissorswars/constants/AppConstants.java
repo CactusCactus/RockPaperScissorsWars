@@ -5,10 +5,16 @@ package com.jakub.rockpaperscissorswars.constants;
  */
 
 public class AppConstants {
+    //TODO przenieść config na firebase
     public static final int BASE_STAT = 5;
-    public static final int CHOOSEN_WEAPON_BONUS = 5;
+    public static final int CHOSEN_WEAPON_BONUS = 5;
     public static final int DEFAULT_HEALTH = 100;
     public static final int DEFAULT_DEFENCE = 1;
+    public static final int HEALTH_INCRAESE = 10;
+    public static final int SKILL_INCREASE = 1;
+    public static final int DEFENCE_INCREASE = 1;
+    public static final int EXP_TO_LVL_RATIO = 100;
+    public static final int LVL_UP_POWER = 2;
 
     public static final String DB_USERS = "users";
     public static final String DB_PENDING = "pending_games";
@@ -17,5 +23,7 @@ public class AppConstants {
     public static final String PLAYER_PARCEL = "player_parcel";
     public static final String ENEMY_PARCEL = "enemy_parcel";
     public static final String BATTLE_PARCEL = "battle_parcel";
+
+    public static final String FIRST_PLAYER_EXTRA = "first_player";
 
 }

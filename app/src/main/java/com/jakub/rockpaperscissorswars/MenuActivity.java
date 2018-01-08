@@ -15,8 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
+import com.jakub.rockpaperscissorswars.dialogs.AftermatchDialog;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
+import com.jakub.rockpaperscissorswars.widgets.LoadingScreen;
 
 import org.parceler.Parcels;
 
@@ -38,66 +40,77 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private User playerUser;
+    private LoadingScreen loadingScreen;
+
     DatabaseReference battleDatabaseRef;
-    private ValueEventListener lookingForBattleListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            final Intent intent = new Intent(MenuActivity.this, GameActivity.class);
-            for (DataSnapshot child: dataSnapshot.getChildren()) {
-                Battle battle = child.getValue(Battle.class);
-                if(battle != null && !battle.getFirstPlayer().getUsername().equals(playerUser.getUsername())  && battle.getSecondPlayer() == null) {
-                    battle.setSecondPlayer(playerUser);
-                    FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE)
-                            .child(battle.getFirstPlayer().getUsername()).setValue(battle);
-                    intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
-                    intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
-                    startActivity(intent);
-                    return;
-                }
-            }
-            Battle battle = new Battle(playerUser, null);
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE);
-            ref.child(playerUser.getUsername()).setValue(battle);
-            waitForOpponent(ref);
-        }
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
+    private ValueEventListener lookingForBattleListener;
+    private ValueEventListener lookingForOpponentListener;
 
-        }
-    };
-    private ValueEventListener lookingForOpponentListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            final Intent intent = new Intent(MenuActivity.this, GameActivity.class);
-            for(DataSnapshot child : dataSnapshot.getChildren()) {
-                Battle battle = child.getValue(Battle.class);
-                if(battle != null && battle.getFirstPlayer().getUsername().equals(playerUser.getUsername()) && battle.getSecondPlayer() != null) {
-                    intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
-                    intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
-                    battleDatabaseRef.removeEventListener(this);
-                    startActivity(intent);
-                }
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };
+    private static final int BATTLE_ACTIVITY_CODE = 1902;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        initListeners();
         init();
         initUser();
+    }
+    private void initListeners() {
+         lookingForBattleListener= new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final Intent intent = new Intent(MenuActivity.this, GameActivity.class);
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    Battle battle = child.getValue(Battle.class);
+                    if(battle != null && !battle.getFirstPlayer().getUsername().equals(playerUser.getUsername())  && battle.getSecondPlayer() == null) {
+                        battle.setSecondPlayer(playerUser);
+                        FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE)
+                                .child(battle.getFirstPlayer().getUsername()).setValue(battle);
+                        intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
+                        intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
+                        startBattleActivity(intent);
+                        return;
+                    }
+                }
+                Battle battle = new Battle(playerUser, null);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE);
+                ref.child(playerUser.getUsername()).setValue(battle);
+                waitForOpponent(ref);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+         lookingForOpponentListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final Intent intent = new Intent(MenuActivity.this, GameActivity.class);
+                for(DataSnapshot child : dataSnapshot.getChildren()) {
+                    Battle battle = child.getValue(Battle.class);
+                    if(battle != null && battle.getFirstPlayer().getUsername().equals(playerUser.getUsername()) && battle.getSecondPlayer() != null) {
+                        intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
+                        intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
+                        battleDatabaseRef.removeEventListener(this);
+                        startBattleActivity(intent);
+                    }
+                }
+                rootLayout.removeView(loadingScreen);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                rootLayout.removeView(loadingScreen);
+            }
+        };
     }
     private void init() {
         ButterKnife.bind(this);
         startGameBtn.setOnClickListener(this);
         warriorScreenBtn.setOnClickListener(this);
         optionsBtn.setOnClickListener(this);
+        loadingScreen = LoadingScreen.create(this);
     }
     private void initUser() {
         playerUser = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.PLAYER_PARCEL));
@@ -122,16 +135,40 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         battleDatabaseRef.addListenerForSingleValueEvent(lookingForBattleListener);
     }
     private void waitForOpponent(DatabaseReference ref) {
+        rootLayout.addView(loadingScreen);
         Toast.makeText(this, "No battle found, creating a new one", Toast.LENGTH_LONG).show();
-        //rootLayout.addView(LoadingScreen.create(this)); //TODO pozniej przy tym poszperam
         battleDatabaseRef.addValueEventListener(lookingForOpponentListener);
     }
     private void startWarriorActivity() {
         Intent intent = new Intent(this, WarriorActivity.class);
+        intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
         startActivity(intent);
     }
     private void startOptionsActivity() {
         Intent intent = new Intent(this, OptionsActivity.class);
         startActivity(intent);
+    }
+    private void startBattleActivity(Intent intent) {
+        startActivityForResult(intent, BATTLE_ACTIVITY_CODE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(battleDatabaseRef != null) {
+            battleDatabaseRef.removeEventListener(lookingForOpponentListener);
+        }
+        rootLayout.removeView(loadingScreen);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == BATTLE_ACTIVITY_CODE) {
+            Battle finishedBattle = Parcels.unwrap(data.getParcelableExtra(AppConstants.BATTLE_PARCEL));
+            boolean isFirstPlayer = data.getBooleanExtra(AppConstants.FIRST_PLAYER_EXTRA, false);
+            battleDatabaseRef.child(finishedBattle.getFirstPlayer().getUsername()).removeValue();
+            AftermatchDialog.create(this, finishedBattle, isFirstPlayer).show();
+
+        }
     }
 }

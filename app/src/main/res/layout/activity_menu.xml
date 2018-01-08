@@ -7,13 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jakub.rockpaperscissorswars.MenuActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/white">
     <TextView
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/light_red"
         android:textSize="32sp"/>
     <LinearLayout
         android:id="@+id/button_layout"
@@ -28,21 +28,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fight"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/light_red"
             android:textColor="@color/white"/>
         <Button
             android:id="@+id/warrior_screen_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/warrior"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/light_red"
             android:textColor="@color/white"/>
         <Button
             android:id="@+id/options_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/settings"
-            android:backgroundTint="@color/colorAccent"
+            android:backgroundTint="@color/light_red"
             android:textColor="@color/white"/>
     </LinearLayout>
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+    <TextView
+        android:id="@+id/outcome_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Outcome"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/light_red"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/progress_to_next_lvl"
+        android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/current_level_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:text="1"
+            android:gravity="center"/>
+        <ProgressBar
+            android:id="@+id/lvl_progress_bar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:indeterminate="false"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="@color/light_red"/>
+        <TextView
+            android:id="@+id/next_level_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:text="2"
+            android:gravity="center"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/dialog_confirm_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        android:backgroundTint="@color/light_red"
+        android:textColor="@color/white"/>
+</LinearLayout>
