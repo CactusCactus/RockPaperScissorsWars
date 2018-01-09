@@ -74,10 +74,11 @@ public class AftermatchDialog extends Dialog {
         }
 
     }
+
     private void calculateAndDisplayExpGain(final User player, final User enemy, boolean isDraw) {
         int startExp = player.getExperience();
         int increase = player.getExperience() + enemy.getLvl() * AppConstants.EXP_TO_LVL_RATIO;
-        if(isDraw) increase = (int)((double)increase / 2);
+        if (isDraw) increase = (int) ((double) increase / 2);
         displayExp(startExp, increase, player.getLvl());
 
         int gainExp = enemy.getLvl() * AppConstants.EXP_TO_LVL_RATIO;
@@ -95,13 +96,14 @@ public class AftermatchDialog extends Dialog {
         player.setVictories(player.getVictories() + 1);
         FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS).child(player.getUsername()).setValue(player);
     }
+
     private void displayExp(final int startExp, final int increase, int playerLvl) {
-        final int max = (int)Math.pow(playerLvl, AppConstants.LVL_UP_POWER) * AppConstants.EXP_TO_LVL_RATIO;
+        final int max = (int) Math.pow(playerLvl, AppConstants.LVL_UP_POWER) * AppConstants.EXP_TO_LVL_RATIO;
         currentLvlTv.setText(String.valueOf(playerLvl));
         nextLevelTv.setText(String.valueOf(playerLvl + 1));
         int progressTo = increase;
         boolean lvlUp = false;
-        if(increase >= max) {
+        if (increase >= max) {
             lvlUp = true;
             progressTo = max;
             playerLvl++;
@@ -111,7 +113,7 @@ public class AftermatchDialog extends Dialog {
         ObjectAnimator progressAnimator = ObjectAnimator.ofInt(levelProgressBar, "progress", startExp, progressTo);
         progressAnimator.setDuration(2000);
         progressAnimator.setInterpolator(new LinearInterpolator());
-        if(lvlUp) {
+        if (lvlUp) {
             final int finalPlayerLvl = playerLvl;
             progressAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -123,6 +125,7 @@ public class AftermatchDialog extends Dialog {
         }
         progressAnimator.start();
     }
+
     private Result isPlayerAWinner(Battle battle, User player) {
         if (battle.getWinner().getUsername().equals(player.getUsername())) return Result.WIN;
         else if (battle.getLoser().getUsername().equals(player.getUsername())) return Result.LOSE;

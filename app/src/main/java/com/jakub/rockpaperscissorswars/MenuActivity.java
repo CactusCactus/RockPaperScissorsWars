@@ -2,13 +2,16 @@ package com.jakub.rockpaperscissorswars;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,8 +27,9 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
+public class MenuActivity extends AppCompatActivity {
 
     @BindView(R.id.start_game_btn)
     Button startGameBtn;
@@ -37,7 +41,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     TextView usernameLabel;
     @BindView(R.id.main_menu_layout)
     RelativeLayout rootLayout;
-
 
     private User playerUser;
     private LoadingScreen loadingScreen;
@@ -107,29 +110,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void init() {
         ButterKnife.bind(this);
-        startGameBtn.setOnClickListener(this);
-        warriorScreenBtn.setOnClickListener(this);
-        optionsBtn.setOnClickListener(this);
         loadingScreen = LoadingScreen.create(this);
     }
     private void initUser() {
         playerUser = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.PLAYER_PARCEL));
         usernameLabel.setText(playerUser.getUsername());
     }
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.start_game_btn:
-                lookForBattle();
-                break;
-            case R.id.warrior_screen_btn:
-                startWarriorActivity();
-                break;
-            case R.id.options_btn:
-                startOptionsActivity();
-                break;
-        }
-    }
+
     private void lookForBattle() {
         battleDatabaseRef = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE);
         battleDatabaseRef.addListenerForSingleValueEvent(lookingForBattleListener);
@@ -146,10 +133,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void startOptionsActivity() {
         Intent intent = new Intent(this, OptionsActivity.class);
+        intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
         startActivity(intent);
     }
     private void startBattleActivity(Intent intent) {
         startActivityForResult(intent, BATTLE_ACTIVITY_CODE);
+    }
+    private void startInfoActivity() {
+        Intent intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -171,4 +163,24 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+    @OnClick(R.id.start_game_btn)
+    public void onStartGameClick() {
+        lookForBattle();
+
+    }
+    @OnClick(R.id.warrior_screen_btn)
+    public void onWarriorScreenClick() {
+        startWarriorActivity();
+
+    }
+    @OnClick(R.id.options_btn)
+    public void onOptionsScreenClick() {
+        startOptionsActivity();
+
+    }
+    @OnClick(R.id.info_btn)
+    public void onInfoClick() {
+        startInfoActivity();
+    }
+
 }

@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/rock"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".MenuActivity" />
         <activity android:name=".GameActivity" />
         <activity android:name=".WarriorActivity" />
         <activity android:name=".OptionsActivity" />
@@ -20,7 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CharacterCreationActivity"></activity>
+        <activity
+            android:name=".CharacterCreationActivity"
+            android:noHistory="true" />
+        <activity android:name=".InfoActivity"></activity>
     </application>
 
 </manifest>

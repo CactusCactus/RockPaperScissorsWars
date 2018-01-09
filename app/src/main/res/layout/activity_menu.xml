@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/main_menu_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_menu_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jakub.rockpaperscissorswars.MenuActivity"
@@ -19,30 +18,41 @@
         android:id="@+id/button_layout"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:orientation="vertical"
         android:padding="10dp">
+
         <Button
             android:id="@+id/start_game_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/fight"
             android:backgroundTint="@color/light_red"
-            android:textColor="@color/white"/>
+            android:text="@string/fight"
+            android:textColor="@color/white" />
+
         <Button
             android:id="@+id/warrior_screen_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/warrior"
             android:backgroundTint="@color/light_red"
-            android:textColor="@color/white"/>
+            android:text="@string/warrior"
+            android:textColor="@color/white" />
+
         <Button
             android:id="@+id/options_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings"
             android:backgroundTint="@color/light_red"
+            android:text="@string/settings"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/info_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_red"
+            android:text="@string/how_to_play"
             android:textColor="@color/white"/>
     </LinearLayout>
 

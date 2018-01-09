@@ -1,5 +1,9 @@
 package com.jakub.rockpaperscissorswars.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
 import com.jakub.rockpaperscissorswars.constants.AttackType;
 import com.jakub.rockpaperscissorswars.models.User;
 
@@ -53,6 +57,15 @@ public class Utils {
             case PAPER: return user.getPaperVal();
             case SCISSORS: return user.getScissorsVal();
             default: return 0;
+        }
+    }
+    public static String getAppVersion(Context context) {
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

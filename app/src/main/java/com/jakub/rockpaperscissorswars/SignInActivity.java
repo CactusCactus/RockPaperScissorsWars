@@ -1,11 +1,16 @@
 package com.jakub.rockpaperscissorswars;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,40 +36,51 @@ import com.jakub.rockpaperscissorswars.models.User;
 
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
+
+    @BindView(R.id.logged_in_label)
+    TextView loggedInLabel;
+    @BindView(R.id.sign_in_button)
+    SignInButton signInButton;
+    @BindView(R.id.start_btn)
+    Button startButton;
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = SignInActivity.class.getCanonicalName();
 
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_in);
+        ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            firebaseAuthWithGoogle(account);
-        } else {
-            setContentView(R.layout.activity_sign_in);
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build();
-            googleSignInClient = GoogleSignIn.getClient(this, gso);
-            SignInButton signInButton = findViewById(R.id.sign_in_button);
-            signInButton.setSize(SignInButton.SIZE_STANDARD);
-            signInButton.setOnClickListener(this);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setOnClickListener(this);
+        firebaseUser = mAuth.getCurrentUser();
+        if(firebaseUser == null) {
+            googleSignInClient.signOut();
         }
+        toggleStartBtn(firebaseUser != null);
+        toggleLoggedIn(firebaseUser != null);
+        startButton.setEnabled(firebaseUser != null);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            completeLogin(user);
-        }
+
 
     }
 
@@ -77,7 +93,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Snackbar.make(findViewById(R.id.sign_in_button), R.string.error_auth, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(startButton, R.string.error_auth, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -88,7 +104,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.sign_in_button:
                 signInGoogle();
                 break;
-            // ...
         }
     }
 
@@ -105,10 +120,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            completeLogin(user);
+                            toggleLoggedIn(true);
+                            toggleStartBtn(true);
+                            startButton.setEnabled(true);
                         } else {
-                            //Snackbar.make(findViewById(R.id.sign_in_button), R.string.error_auth, Snackbar.LENGTH_SHORT).show();
+                            googleSignInClient.signOut();
+                            toggleLoggedIn(false);
+                            Snackbar.make(startButton, R.string.error_auth, Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -135,10 +153,42 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //Snackbar.make(findViewById(R.id.sign_in_button), R.string.error_db_connection, BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(startButton, R.string.error_db_connection, Snackbar.LENGTH_SHORT).show();
             }
         });
 
     }
+    private void toggleLoggedIn(boolean loggedIn) {
+        loggedInLabel.setText(loggedIn ? getString(R.string.logged_in) : getString(R.string.not_logged_in));
+        loggedInLabel.setTextColor(loggedIn ? getResources().getColor(R.color.light_red) : getResources().getColor(R.color.light_gray));
+    }
+    private void toggleStartBtn(boolean loggedIn) {
+        startButton.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
+        signInButton.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
+    }
+    @OnClick(R.id.quit_btn)
+    public void onQuitClick() {
+        new AlertDialog.Builder(this).setTitle(R.string.log_out)
+                .setMessage(R.string.are_you_sure)
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        googleSignInClient.signOut();
+                        toggleLoggedIn(false);
+                        toggleStartBtn(false);
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
 
+    }
+    @OnClick(R.id.start_btn)
+    public void onStartClick() {
+        if (firebaseUser != null) {
+            completeLogin(firebaseUser);
+        } else {
+            firebaseUser = mAuth.getCurrentUser();
+        }
+    }
 }
