@@ -90,7 +90,7 @@ public class CharacterCreationActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
-                            Intent intent = new Intent(CharacterCreationActivity.this, MenuActivity.class);
+                            Intent intent = new Intent(CharacterCreationActivity.this, InfoActivity.class);
                             intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(newUser));
                             startActivity(intent);
                         }

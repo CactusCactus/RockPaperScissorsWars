@@ -31,4 +31,8 @@
     <string name="not_logged_in">Nie zalogowany</string>
     <string name="how_to_play">How to play</string>
     <string name="version">Version</string>
+    <string name="general_explanation">Rock Paper Wars jest grą internetową grą w kamień, papier nożyce, opierającą z elementami RPG.</string>
+    <string name="types_explanation">Wojownik dysponuje trzema broniami: Kamieniem, Papierem i Nożyczkami. Każda o silę określonej przez liczbę znajdującą się nad ikoną. Kamień pokonuje Nożyczki, Nożyczki pokonują Papier, a Papier pokonuje Kamień. Obrażenia równe są wartości danej broni. W przypadku remisu (oboje gracze rzuczą tą samą broń), zadawana jest tylko połowa obrażeń obu graczom.</string>
+    <string name="health_defence_explanation">Każdy gracz ma wartość życia reprezentowaą sercem. Gdy spadnie do zera, gracz przegrywa bitwę. Tarcza definiuję obronę gracza, reprezentowana jest wartością procentową. Jest to szansa na uniknięcie obrażeń w wypadku przegranej.</string>
+    <string name="warrior_explanation">Po wygranej bitwe gracz otrzymuje doświadczenie które pozwala zwiększyć jego poziom. Po osiągnięciu nowego poziomu gracz może zwiększyć któryś z atrybutów na ekranie Wojownika.</string>
 </resources>

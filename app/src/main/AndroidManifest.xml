@@ -23,7 +23,9 @@
         <activity
             android:name=".CharacterCreationActivity"
             android:noHistory="true" />
-        <activity android:name=".InfoActivity"></activity>
+        <activity
+            android:name=".InfoActivity"
+            android:noHistory="true" />
     </application>
 
 </manifest>

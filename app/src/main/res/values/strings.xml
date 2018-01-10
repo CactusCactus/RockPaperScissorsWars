@@ -31,4 +31,8 @@
     <string name="not_logged_in">Not logged in</string>
     <string name="how_to_play">How to play</string>
     <string name="version">Version</string>
+    <string name="general_explanation">Rock Paper Wars is online rock, paper, scissors game with RPG elements.</string>
+    <string name="types_explanation">Warrior has three weapons to his disposition: Rock, Paper, Scissors. Each has a power described by number above it. Rock beats Scissors, Scissors beat Paper, and Paper beats Rock. Damage is equal to weapon value. In case of draw (both players use the same weapon), only half of damage is dealt to both players.</string>
+    <string name="health_defence_explanation">Every player has a health value represented by hearth symbol. If it reaches zero, player loses a battle. Shield defines player defence, represented by a percent value. It\'s a chance to avoid getting damaged in case of losing.</string>
+    <string name="warrior_explanation">After a victory player gets experience used to increase his level. After reaching a new level player can increase his attributes on the Warrior screen.</string>
 </resources>
