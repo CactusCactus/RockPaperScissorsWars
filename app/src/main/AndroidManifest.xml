@@ -9,11 +9,20 @@
         android:roundIcon="@drawable/rock"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".GameActivity" />
-        <activity android:name=".WarriorActivity" />
-        <activity android:name=".OptionsActivity" />
-        <activity android:name=".SignInActivity">
+        <activity android:name=".MenuActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="layoutDirection|locale"/>
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait"
+            android:noHistory="true"/>
+        <activity android:name=".WarriorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".OptionsActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="layoutDirection|locale"/>
+        <activity android:name=".SignInActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="layoutDirection|locale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,10 +31,12 @@
         </activity>
         <activity
             android:name=".CharacterCreationActivity"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".InfoActivity"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

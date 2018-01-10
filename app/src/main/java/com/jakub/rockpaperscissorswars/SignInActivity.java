@@ -2,6 +2,7 @@ package com.jakub.rockpaperscissorswars;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -33,8 +34,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
+import com.jakub.rockpaperscissorswars.utils.Utils;
 
 import org.parceler.Parcels;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +62,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLanguage();
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
@@ -76,7 +81,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         toggleLoggedIn(firebaseUser != null);
         startButton.setEnabled(firebaseUser != null);
     }
-
+    private void setLanguage() {
+        String lang = getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).getString(AppConstants.USER_LANG, Locale.getDefault().getLanguage());
+        Utils.setLocale(lang, this);
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -166,6 +174,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         startButton.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
         signInButton.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean langChanged = getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).getBoolean(AppConstants.LANG_CHANGED_SIGNIN, false);
+        if(langChanged) {
+            recreate();
+            getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putBoolean(AppConstants.LANG_CHANGED_SIGNIN, false).apply();
+        }
+    }
+
     @OnClick(R.id.quit_btn)
     public void onQuitClick() {
         new AlertDialog.Builder(this).setTitle(R.string.log_out)

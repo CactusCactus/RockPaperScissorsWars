@@ -2,9 +2,14 @@ package com.jakub.rockpaperscissorswars;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +29,10 @@ import butterknife.OnClick;
 public class OptionsActivity extends AppCompatActivity {
     @BindView(R.id.version_label)
     TextView versionLabel;
-
+    @BindView(R.id.lang_spinner)
+    Spinner langSpinner;
     User playerUser;
+    boolean firstSelect = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +40,34 @@ public class OptionsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         playerUser = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.PLAYER_PARCEL));
         versionLabel.setText(Utils.getAppVersion(this));
+        initLangSpinner();
     }
+    private void initLangSpinner() {
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.lang_array));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        langSpinner.setAdapter(dataAdapter);
+        langSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(!firstSelect) {
+                    String lang = getResources().getStringArray(R.array.lang_codes_array)[position];
+                    Utils.setLocale(lang, getApplicationContext());
+                    Snackbar.make(langSpinner, R.string.quit_to_apply, Snackbar.LENGTH_LONG).show();
+                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putBoolean(AppConstants.LANG_CHANGED_MENU, true).apply();
+                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putBoolean(AppConstants.LANG_CHANGED_SIGNIN, true).apply();
+                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putString(AppConstants.USER_LANG, lang).apply();
+                }
+                firstSelect = false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     @OnClick(R.id.delete_warrior_btn)
     public void onDeleteWarriorClick() {
         new AlertDialog.Builder(this).setTitle(getString(R.string.delete_warrior))

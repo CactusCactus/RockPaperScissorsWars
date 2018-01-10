@@ -1,11 +1,17 @@
 package com.jakub.rockpaperscissorswars.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import com.jakub.rockpaperscissorswars.constants.AttackType;
 import com.jakub.rockpaperscissorswars.models.User;
+
+import java.util.Locale;
 
 /**
  * Created by Emil on 2018-01-07.
@@ -67,5 +73,13 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+    public static void setLocale(String lang, Context context) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Resources res = context.getResources();
+        Configuration config = new Configuration(res.getConfiguration());
+        config.setLocale(new Locale(lang));
+        res.updateConfiguration(config, res.getDisplayMetrics());
     }
 }

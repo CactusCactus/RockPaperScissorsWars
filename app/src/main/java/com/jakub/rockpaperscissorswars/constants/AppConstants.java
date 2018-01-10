@@ -26,4 +26,9 @@ public class AppConstants {
 
     public static final String FIRST_PLAYER_EXTRA = "first_player";
 
+    public static final String SHARED_PREF = "SHARED_PREF";
+    public static final String LANG_CHANGED_MENU = "LANG_CHANGED_MENU";
+    public static final String LANG_CHANGED_SIGNIN = "LANG_CHANGED_SIGNIN";
+    public static final String USER_LANG = "USER_LANG";
+
 }

@@ -10,7 +10,7 @@
 
     <Button
         android:id="@+id/start_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start"
         android:textSize="30sp"
@@ -18,7 +18,7 @@
         android:backgroundTint="@color/light_red"/>
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <View
         android:layout_width="0dp"

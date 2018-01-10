@@ -1,6 +1,7 @@
 package com.jakub.rockpaperscissorswars;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
@@ -142,6 +143,16 @@ public class MenuActivity extends AppCompatActivity {
     private void startInfoActivity() {
         Intent intent = new Intent(this, InfoActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        boolean langChanged = getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).getBoolean(AppConstants.LANG_CHANGED_MENU, false);
+        if(langChanged) {
+            recreate();
+            getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putBoolean(AppConstants.LANG_CHANGED_MENU, false).apply();
+        }
+        super.onResume();
     }
 
     @Override
