@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/light_red"
-        android:textSize="32sp"/>
+        android:textSize="32sp"
+        android:background="@color/very_light_gray"/>
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="250dp"

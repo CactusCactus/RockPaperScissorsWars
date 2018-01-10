@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jakub.rockpaperscissorswars.config.Config;
+import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.models.User;
 import com.jakub.rockpaperscissorswars.widgets.LoadingScreen;
@@ -119,27 +121,27 @@ public class WarriorActivity extends AppCompatActivity {
 
     @OnClick(R.id.health_plus_btn)
     public void onHealthPlusClick() {
-        playerUser.setHealth(playerUser.getHealth() + AppConstants.HEALTH_INCRAESE);
+        playerUser.setHealth(playerUser.getHealth() + ConfigController.getConfig().getHealthIncrease());
         updateScreenAndDB();
     }
     @OnClick(R.id.defence_plus_btn)
     public void onDefencePlusClick() {
-        playerUser.setDefence(playerUser.getDefence() + AppConstants.DEFENCE_INCREASE);
+        playerUser.setDefence(playerUser.getDefence() + ConfigController.getConfig().getDefenceIncrease());
         updateScreenAndDB();
     }
     @OnClick(R.id.rock_plus_btn)
     public void onRockPlusClick() {
-        playerUser.setRockVal(playerUser.getRockVal() + AppConstants.SKILL_INCREASE);
+        playerUser.setRockVal(playerUser.getRockVal() + ConfigController.getConfig().getSkillIncrease());
         updateScreenAndDB();
     }
     @OnClick(R.id.paper_plus_btn)
     public  void onPaperPlusClick() {
-        playerUser.setPaperVal(playerUser.getPaperVal() + AppConstants.SKILL_INCREASE);
+        playerUser.setPaperVal(playerUser.getPaperVal() + ConfigController.getConfig().getSkillIncrease());
         updateScreenAndDB();
     }
     @OnClick(R.id.scissors_plus_btn)
     public void onScissorsPlusClick() {
-        playerUser.setScissorsVal(playerUser.getScissorsVal() + AppConstants.SKILL_INCREASE);
+        playerUser.setScissorsVal(playerUser.getScissorsVal() + ConfigController.getConfig().getSkillIncrease());
         updateScreenAndDB();
     }
     private void updateScreenAndDB() {

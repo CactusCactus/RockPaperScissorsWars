@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,10 +33,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jakub.rockpaperscissorswars.config.ConfigController;
+import com.jakub.rockpaperscissorswars.config.ConfigListener;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
 import com.jakub.rockpaperscissorswars.utils.Utils;
+import com.jakub.rockpaperscissorswars.widgets.LoadingScreen;
 
 import org.parceler.Parcels;
 
@@ -52,6 +57,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     SignInButton signInButton;
     @BindView(R.id.start_btn)
     Button startButton;
+    @BindView(R.id.root_layout)
+    RelativeLayout rootLayout;
+
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = SignInActivity.class.getCanonicalName();
 
@@ -59,12 +67,25 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
 
+    private LoadingScreen loadingScreen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLanguage();
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
+        loadingScreen = new LoadingScreen(this);
+        initSignIn();
+    }
+    private void initConfig() {
+
+    }
+    private void setLanguage() {
+        String lang = getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).getString(AppConstants.USER_LANG, Locale.getDefault().getLanguage());
+        Utils.setLocale(lang, this);
+    }
+    private void initSignIn() {
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -80,10 +101,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         toggleStartBtn(firebaseUser != null);
         toggleLoggedIn(firebaseUser != null);
         startButton.setEnabled(firebaseUser != null);
-    }
-    private void setLanguage() {
-        String lang = getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).getString(AppConstants.USER_LANG, Locale.getDefault().getLanguage());
-        Utils.setLocale(lang, this);
     }
     @Override
     protected void onStart() {
@@ -131,6 +148,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             toggleLoggedIn(true);
                             toggleStartBtn(true);
                             startButton.setEnabled(true);
+
                         } else {
                             googleSignInClient.signOut();
                             toggleLoggedIn(false);
@@ -156,7 +174,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 }
-                startActivity(intent);
+                final Intent finalIntent = intent;
+                ConfigController.syncConfig(new ConfigListener() {
+                    @Override
+                    public void onConfigReady() {
+                        startActivity(finalIntent);
+                    }
+                });
             }
 
             @Override
@@ -205,6 +229,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @OnClick(R.id.start_btn)
     public void onStartClick() {
         if (firebaseUser != null) {
+            rootLayout.addView(loadingScreen);
             completeLogin(firebaseUser);
         } else {
             firebaseUser = mAuth.getCurrentUser();

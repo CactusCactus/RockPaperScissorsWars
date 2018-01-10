@@ -1,5 +1,6 @@
 package com.jakub.rockpaperscissorswars.models;
 
+import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 
 import org.parceler.Parcel;
@@ -49,8 +50,8 @@ public class User {
         this.rockVal = rockVal;
         this.paperVal = paperVal;
         this.scissorsVal = scissorsVal;
-        this.health = AppConstants.DEFAULT_HEALTH;
-        this.defence = AppConstants.DEFAULT_DEFENCE;
+        this.health = ConfigController.getConfig().getDefaultHealth();
+        this.defence = ConfigController.getConfig().getDefaultDefence();
         this.victories = 0;
     }
 

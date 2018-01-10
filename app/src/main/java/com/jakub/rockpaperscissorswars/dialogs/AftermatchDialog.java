@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakub.rockpaperscissorswars.R;
+import com.jakub.rockpaperscissorswars.config.Config;
+import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.Result;
 import com.jakub.rockpaperscissorswars.models.Battle;
@@ -76,19 +78,20 @@ public class AftermatchDialog extends Dialog {
     }
 
     private void calculateAndDisplayExpGain(final User player, final User enemy, boolean isDraw) {
+        Config config = ConfigController.getConfig();
         int startExp = player.getExperience();
-        int increase = player.getExperience() + enemy.getLvl() * AppConstants.EXP_TO_LVL_RATIO;
+        int increase = player.getExperience() + enemy.getLvl() * config.getExpToLvlRatio();
         if (isDraw) increase = (int) ((double) increase / 2);
         displayExp(startExp, increase, player.getLvl());
 
-        int gainExp = enemy.getLvl() * AppConstants.EXP_TO_LVL_RATIO;
-        int max = (int) Math.pow(player.getLvl(), AppConstants.LVL_UP_POWER) * AppConstants.EXP_TO_LVL_RATIO;
+        int gainExp = enemy.getLvl() * config.getExpToLvlRatio();
+        int max = (int) Math.pow(player.getLvl(), config.getLvlUpPower()) * config.getExpToLvlRatio();
         int newLvl = player.getLvl();
         int newExp = player.getExperience() + gainExp;
         while (newExp >= max) {
             newExp = newExp - max;
             newLvl++;
-            max = (int) Math.pow(newLvl, AppConstants.LVL_UP_POWER) * AppConstants.EXP_TO_LVL_RATIO;
+            max = (int) Math.pow(newLvl, config.getLvlUpPower()) * config.getExpToLvlRatio();
         }
         player.setSkillPoints(player.getSkillPoints() + (newLvl - player.getLvl()));
         player.setLvl(newLvl);
@@ -98,7 +101,8 @@ public class AftermatchDialog extends Dialog {
     }
 
     private void displayExp(final int startExp, final int increase, int playerLvl) {
-        final int max = (int) Math.pow(playerLvl, AppConstants.LVL_UP_POWER) * AppConstants.EXP_TO_LVL_RATIO;
+        Config config = ConfigController.getConfig();
+        final int max = (int) Math.pow(playerLvl, config.getLvlUpPower()) * config.getLvlUpPower();
         currentLvlTv.setText(String.valueOf(playerLvl));
         nextLevelTv.setText(String.valueOf(playerLvl + 1));
         int progressTo = increase;

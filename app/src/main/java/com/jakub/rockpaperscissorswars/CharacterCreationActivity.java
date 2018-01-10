@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.AttackType;
 import com.jakub.rockpaperscissorswars.models.User;
@@ -103,8 +104,8 @@ public class CharacterCreationActivity extends AppCompatActivity {
 
     private int getStat(AttackType type) {
         if (type.equals(selectedType))
-            return AppConstants.BASE_STAT + AppConstants.CHOSEN_WEAPON_BONUS;
-        else return AppConstants.BASE_STAT;
+            return ConfigController.getConfig().getBaseStat() + ConfigController.getConfig().getChosenWeaponBonus();
+        else return ConfigController.getConfig().getBaseStat();
     }
 
     private void toggleButtonColors(AttackType type) {

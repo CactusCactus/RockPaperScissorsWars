@@ -98,9 +98,9 @@ public class MenuActivity extends AppCompatActivity {
                         intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
                         battleDatabaseRef.removeEventListener(this);
                         startBattleActivity(intent);
+                        rootLayout.removeView(loadingScreen);
                     }
                 }
-                rootLayout.removeView(loadingScreen);
             }
 
             @Override
