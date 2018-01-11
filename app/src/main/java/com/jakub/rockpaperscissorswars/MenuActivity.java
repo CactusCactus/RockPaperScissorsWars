@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
+import com.jakub.rockpaperscissorswars.dao.FirebaseDAO;
 import com.jakub.rockpaperscissorswars.dialogs.AftermatchDialog;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
@@ -72,8 +73,7 @@ public class MenuActivity extends AppCompatActivity {
                     Battle battle = child.getValue(Battle.class);
                     if (battle != null && !battle.getFirstPlayer().getUsername().equals(playerUser.getUsername()) && battle.getSecondPlayer() == null) {
                         battle.setSecondPlayer(playerUser);
-                        FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE)
-                                .child(battle.getFirstPlayer().getUsername()).setValue(battle);
+                        FirebaseDAO.updateBattle(battle);
                         intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
                         intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
                         startBattleActivity(intent);
@@ -82,7 +82,7 @@ public class MenuActivity extends AppCompatActivity {
                 }
                 Battle battle = new Battle(playerUser, null);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_BATTLE);
-                ref.child(playerUser.getUsername()).setValue(battle);
+                FirebaseDAO.updateBattle(battle);
                 waitForOpponent(ref);
             }
 
@@ -163,7 +163,7 @@ public class MenuActivity extends AppCompatActivity {
                     .setAction(R.string.cancel, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            battleDatabaseRef.child(playerUser.getUsername()).removeValue();
+                            FirebaseDAO.deleteBattle(playerUser);
                             rootLayout.removeView(loadingScreen);
                         }
                     });
@@ -224,7 +224,7 @@ public class MenuActivity extends AppCompatActivity {
             updatePlayer();
             Battle finishedBattle = Parcels.unwrap(data.getParcelableExtra(AppConstants.BATTLE_PARCEL));
             boolean isFirstPlayer = data.getBooleanExtra(AppConstants.FIRST_PLAYER_EXTRA, false);
-            battleDatabaseRef.child(finishedBattle.getFirstPlayer().getUsername()).removeValue();
+            FirebaseDAO.deleteBattle(finishedBattle);
             AftermatchDialog.create(this, finishedBattle, isFirstPlayer).show();
 
         }

@@ -47,4 +47,6 @@
     <string name="quit_to_apply">Quit this screen, to apply changes.</string>
     <string name="waiting_for_enemy">Oczekiwanie na przeciwnika</string>
     <string name="no_battle_found">No battle found, creating a new one</string>
+    <string name="dies">umiera</string>
+    <string name="both_died">Oboje zgineliscie</string>
 </resources>

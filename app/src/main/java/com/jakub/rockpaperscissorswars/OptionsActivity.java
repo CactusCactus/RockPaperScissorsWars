@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
+import com.jakub.rockpaperscissorswars.dao.FirebaseDAO;
 import com.jakub.rockpaperscissorswars.models.User;
 import com.jakub.rockpaperscissorswars.utils.Utils;
 
@@ -106,7 +107,6 @@ public class OptionsActivity extends AppCompatActivity {
 
     }
     private void deleteWarrior() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS).child(playerUser.getUsername());
-        ref.removeValue();
+        FirebaseDAO.deletePlayer(playerUser);
     }
 }

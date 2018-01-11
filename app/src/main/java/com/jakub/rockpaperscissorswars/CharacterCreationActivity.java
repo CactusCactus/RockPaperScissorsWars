@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jakub.rockpaperscissorswars.config.ConfigController;
+import com.jakub.rockpaperscissorswars.config.ConfigListener;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.AttackType;
 import com.jakub.rockpaperscissorswars.models.User;

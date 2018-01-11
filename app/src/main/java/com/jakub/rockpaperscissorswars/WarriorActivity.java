@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.jakub.rockpaperscissorswars.config.Config;
 import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
+import com.jakub.rockpaperscissorswars.dao.FirebaseDAO;
 import com.jakub.rockpaperscissorswars.models.User;
 import com.jakub.rockpaperscissorswars.utils.Utils;
 import com.jakub.rockpaperscissorswars.widgets.LoadingScreen;
@@ -148,8 +149,7 @@ public class WarriorActivity extends AppCompatActivity {
     private void updateScreenAndDB() {
         deceaseSkillPoints();
         toggleButtons();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS);
-        ref.child(playerUser.getUsername()).setValue(playerUser);
+        FirebaseDAO.updatePlayer(playerUser);
     }
     private void deceaseSkillPoints() {
         playerUser.setSkillPoints(playerUser.getSkillPoints() - 1);

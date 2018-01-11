@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.AttackType;
+import com.jakub.rockpaperscissorswars.dao.FirebaseDAO;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
 import com.jakub.rockpaperscissorswars.utils.Utils;
@@ -205,7 +206,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             currentBattle.setSecondPlayerMove(AttackType.ROCK);
         }
-        battleRef.setValue(currentBattle);
+        FirebaseDAO.updateBattle(currentBattle);
         toggleButtonsLock(false);
     }
 
@@ -216,7 +217,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             currentBattle.setSecondPlayerMove(AttackType.PAPER);
         }
-        battleRef.setValue(currentBattle);
+        FirebaseDAO.updateBattle(currentBattle);
         toggleButtonsLock(false);
     }
 
@@ -227,7 +228,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             currentBattle.setSecondPlayerMove(AttackType.SCISSORS);
         }
-        battleRef.setValue(currentBattle);
+        FirebaseDAO.updateBattle(currentBattle);
         toggleButtonsLock(false);
     }
     @OnClick(R.id.quit_btn)
@@ -252,23 +253,23 @@ public class GameActivity extends AppCompatActivity {
                     currentBattle.setFirstPlayerMove(null);
                     currentBattle.setSecondPlayerMove(null);
                     mainLabel.setVisibility(View.GONE);
-                    battleRef.setValue(currentBattle);
+                    FirebaseDAO.updateBattle(currentBattle);
                     resetHealthAndDefenceColors();
                 }
             }, 3000);
             boolean gameOver = false;
             if(currentBattle.getFirstPlayerHp() <=0 && currentBattle.getSecondPlayerHp() <= 0) {
-                mainLabel.setText("Oboje zgineliscie :ccc");
+                mainLabel.setText(R.string.both_died);
                 toggleButtonsLock(false);
                 gameOver = true;
             } else if(currentBattle.getFirstPlayerHp() <= 0) {
-                mainLabel.setText(currentBattle.getFirstPlayer().getUsername() + "  Umiera :c");
+                mainLabel.setText(currentBattle.getFirstPlayer().getUsername() +  " " +getString(R.string.dies));
                 toggleButtonsLock(false);
                 gameOver = true;
                 currentBattle.setWinner(currentBattle.getSecondPlayer());
                 currentBattle.setLoser(currentBattle.getFirstPlayer());
             } else if (currentBattle.getSecondPlayerHp() <= 0) {
-                mainLabel.setText(currentBattle.getSecondPlayer().getUsername() + "  Umiera :c");
+                mainLabel.setText(currentBattle.getSecondPlayer().getUsername() +  " " +getString(R.string.dies));
                 toggleButtonsLock(false);
                 gameOver = true;
                 currentBattle.setWinner(currentBattle.getFirstPlayer());
@@ -419,7 +420,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        battleRef.removeValue();
+        FirebaseDAO.deleteBattle(currentBattle);
     }
     private String getPlayerHealth() {
         return String.valueOf(isFirstPlayer ? currentBattle.getFirstPlayerHp() : currentBattle.getSecondPlayerHp() + "/" +
