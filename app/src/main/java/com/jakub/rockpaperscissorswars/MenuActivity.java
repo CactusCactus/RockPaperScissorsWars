@@ -42,6 +42,8 @@ public class MenuActivity extends AppCompatActivity {
     TextView usernameLabel;
     @BindView(R.id.main_menu_layout)
     RelativeLayout rootLayout;
+    @BindView(R.id.victories_label)
+    TextView victoriesLabel;
 
     private User playerUser;
     private LoadingScreen loadingScreen;
@@ -116,6 +118,7 @@ public class MenuActivity extends AppCompatActivity {
     private void initUser() {
         playerUser = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.PLAYER_PARCEL));
         usernameLabel.setText(playerUser.getUsername());
+        victoriesLabel.setText(String.valueOf(playerUser.getVictories()));
     }
 
     private void lookForBattle() {

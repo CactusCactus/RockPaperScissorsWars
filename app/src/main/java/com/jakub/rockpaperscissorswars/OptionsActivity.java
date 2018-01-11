@@ -75,8 +75,7 @@ public class OptionsActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS).child(playerUser.getUsername());
-                        ref.removeValue();
+                        deleteWarrior();
                         Intent intent = new Intent(OptionsActivity.this, SignInActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -94,6 +93,7 @@ public class OptionsActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        deleteWarrior();
                         FirebaseAuth.getInstance().getCurrentUser().delete();
                         Intent intent = new Intent(OptionsActivity.this, SignInActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -105,5 +105,8 @@ public class OptionsActivity extends AppCompatActivity {
                 .show();
 
     }
-
+    private void deleteWarrior() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS).child(playerUser.getUsername());
+        ref.removeValue();
+    }
 }
