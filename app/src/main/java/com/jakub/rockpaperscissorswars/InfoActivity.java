@@ -17,6 +17,7 @@ import butterknife.OnClick;
 public class InfoActivity extends AppCompatActivity {
 
     User playerCharacter;
+    boolean fromMainMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,17 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
         ButterKnife.bind(this);
         playerCharacter = Parcels.unwrap(getIntent().getParcelableExtra(AppConstants.PLAYER_PARCEL));
+        fromMainMenu = getIntent().getBooleanExtra(AppConstants.FROM_MAIN_MENU, false);
     }
 
     @OnClick(R.id.confirm_btn)
     public void onConfirmClick() {
-        Intent intent = new Intent(this, MenuActivity.class);
-        intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerCharacter));
-        startActivity(intent);
+        if(fromMainMenu) {
+            finish();
+        } else {
+            Intent intent = new Intent(this, MenuActivity.class);
+            intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerCharacter));
+            startActivity(intent);
+        }
     }
 }

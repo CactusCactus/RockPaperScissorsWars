@@ -37,4 +37,6 @@
     <string name="warrior_explanation">Po wygranej bitwe gracz otrzymuje doświadczenie które pozwala zwiększyć jego poziom. Po osiągnięciu nowego poziomu gracz może zwiększyć któryś z atrybutów na ekranie Wojownika.</string>
     <string name="choose_lang">Wybierz język</string>
     <string name="quit_to_apply">Wyjdź u ustawień, żeby zaplikować zmiany</string>
+    <string name="waiting_for_enemy">Oczekiwanie na przeciwnika</string>
+    <string name="no_battle_found">No battle found, creating a new one</string>
 </resources>

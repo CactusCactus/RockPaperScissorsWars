@@ -14,8 +14,9 @@ public class Config {
     private int healthIncrease;
     private int skillIncrease;
     private int defenceIncrease;
-    private int expToLvlRation;
+    private int expToLvlRatio;
     private int lvlUpPower;
+    private int skillPointsOnLvlUp;
 
     @PropertyName("base_stat")
     public int getBaseStat() {
@@ -76,11 +77,11 @@ public class Config {
 
     @PropertyName("exp_to_lvl_ratio")
     public int getExpToLvlRatio() {
-        return expToLvlRation;
+        return expToLvlRatio;
     }
     @PropertyName("exp_to_lvl_ratio")
     public void setExpToLvlRation(int expToLvlRation) {
-        this.expToLvlRation = expToLvlRation;
+        this.expToLvlRatio = expToLvlRation;
     }
     @PropertyName("lvl_up_power")
     public int getLvlUpPower() {
@@ -91,4 +92,12 @@ public class Config {
         this.lvlUpPower = lvlUpPower;
     }
 
+    @PropertyName("skill_points_on_lvl_up")
+    public int getSkillPointsOnLvlUp() {
+        return skillPointsOnLvlUp;
+    }
+    @PropertyName("skill_points_on_lvl_up")
+    public void setSkillPointsOnLvlUp(int skillPointsOnLvlUp) {
+        this.skillPointsOnLvlUp = skillPointsOnLvlUp;
+    }
 }

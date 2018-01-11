@@ -20,5 +20,6 @@ public class AppConstants {
     public static final String LANG_CHANGED_MENU = "LANG_CHANGED_MENU";
     public static final String LANG_CHANGED_SIGNIN = "LANG_CHANGED_SIGNIN";
     public static final String USER_LANG = "USER_LANG";
+    public static final String FROM_MAIN_MENU = "FROM_MAIN_MENU";
 
 }

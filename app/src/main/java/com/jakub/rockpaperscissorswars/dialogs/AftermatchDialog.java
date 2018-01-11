@@ -19,6 +19,7 @@ import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.Result;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
+import com.jakub.rockpaperscissorswars.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,9 +92,9 @@ public class AftermatchDialog extends Dialog {
         while (newExp >= max) {
             newExp = newExp - max;
             newLvl++;
-            max = (int) Math.pow(newLvl, config.getLvlUpPower()) * config.getExpToLvlRatio();
+            max = Utils.getExpToLvl(newLvl);
         }
-        player.setSkillPoints(player.getSkillPoints() + (newLvl - player.getLvl()));
+        player.setSkillPoints(player.getSkillPoints() + ((newLvl - player.getLvl()) * config.getSkillPointsOnLvlUp()));
         player.setLvl(newLvl);
         player.setExperience(newExp);
         player.setVictories(player.getVictories() + 1);
@@ -102,7 +103,7 @@ public class AftermatchDialog extends Dialog {
 
     private void displayExp(final int startExp, final int increase, int playerLvl) {
         Config config = ConfigController.getConfig();
-        final int max = (int) Math.pow(playerLvl, config.getLvlUpPower()) * config.getLvlUpPower();
+        final int max = Utils.getExpToLvl(playerLvl);
         currentLvlTv.setText(String.valueOf(playerLvl));
         nextLevelTv.setText(String.valueOf(playerLvl + 1));
         int progressTo = increase;

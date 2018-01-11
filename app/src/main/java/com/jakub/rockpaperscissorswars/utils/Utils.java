@@ -8,6 +8,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
+import com.jakub.rockpaperscissorswars.config.Config;
+import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AttackType;
 import com.jakub.rockpaperscissorswars.models.User;
 
@@ -81,5 +83,9 @@ public class Utils {
         Configuration config = new Configuration(res.getConfiguration());
         config.setLocale(new Locale(lang));
         res.updateConfiguration(config, res.getDisplayMetrics());
+    }
+    public static int getExpToLvl(int lvl) {
+        Config config = ConfigController.getConfig();
+        return (int) (Math.pow(lvl, config.getLvlUpPower()) * config.getExpToLvlRatio());
     }
 }

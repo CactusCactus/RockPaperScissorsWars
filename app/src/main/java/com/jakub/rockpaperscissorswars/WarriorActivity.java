@@ -15,6 +15,7 @@ import com.jakub.rockpaperscissorswars.config.Config;
 import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.models.User;
+import com.jakub.rockpaperscissorswars.utils.Utils;
 import com.jakub.rockpaperscissorswars.widgets.LoadingScreen;
 
 import org.parceler.Parcels;
@@ -101,7 +102,7 @@ public class WarriorActivity extends AppCompatActivity {
     private void fillFields(User user) {
         usernameLabel.setText(user.getUsername());
         playerLvlTv.setText(String.valueOf(user.getLvl()));
-        playerExpTv.setText(String.valueOf(user.getExperience()));
+        playerExpTv.setText(user.getExperience() + "/" + Utils.getExpToLvl(user.getLvl()));
         playerVictoriesTv.setText(String.valueOf(user.getVictories()));
         playerSPTv.setText(String.valueOf(user.getSkillPoints()));
         playerHealthTv.setText(String.valueOf(user.getHealth()));
