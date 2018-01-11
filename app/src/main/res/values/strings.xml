@@ -45,8 +45,10 @@
     <string name="warrior_explanation">After a victory player gets experience used to increase his level. After reaching a new level player can increase his attributes on the Warrior screen.</string>
     <string name="choose_lang">Choose language</string>
     <string name="quit_to_apply">Quit this screen, to apply changes.</string>
-    <string name="waiting_for_enemy">Oczekiwanie na przeciwnika</string>
+    <string name="waiting_for_enemy">Waiting for the opponent</string>
     <string name="no_battle_found">No battle found, creating a new one</string>
-    <string name="dies">umiera</string>
-    <string name="both_died">Oboje zgineliscie</string>
+    <string name="dies">dies</string>
+    <string name="both_died">You both die.</string>
+    <string name="ranking">Ranking</string>
+    <string name="victory_ranking">Victory ranking</string>
 </resources>

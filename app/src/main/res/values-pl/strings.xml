@@ -38,7 +38,9 @@
     <string name="choose_lang">Wybierz język</string>
     <string name="quit_to_apply">Wyjdź u ustawień, żeby zaplikować zmiany</string>
     <string name="waiting_for_enemy">Oczekiwanie na przeciwnika</string>
-    <string name="no_battle_found">No battle found, creating a new one</string>
+    <string name="no_battle_found">Nie znaleziono bitwy, tworzenie nowej</string>
     <string name="dies">umiera</string>
     <string name="both_died">Oboje zgineliscie</string>
+    <string name="ranking">Ranking</string>
+    <string name="victory_ranking">Ranking zwycięstw</string>
 </resources>

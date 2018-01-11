@@ -6,6 +6,8 @@ import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
 
+import java.util.List;
+
 /**
  * Created by Emil on 2018-01-11.
  */

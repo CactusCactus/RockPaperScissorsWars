@@ -7,12 +7,21 @@
     android:orientation="vertical"
     android:padding="10dp"
     android:gravity="center_horizontal">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_lang"
+        android:textSize="16sp"
+        android:textColor="@color/light_red"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold"/>
     <Spinner
         android:id="@+id/lang_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/choose_lang"
-        android:entries="@array/lang_array">
+        android:entries="@array/lang_array"
+        android:layout_marginBottom="20dp">
     </Spinner>
     <Button
         android:id="@+id/delete_warrior_btn"

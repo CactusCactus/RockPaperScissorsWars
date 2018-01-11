@@ -189,7 +189,10 @@ public class MenuActivity extends AppCompatActivity {
     private void startBattleActivity(Intent intent) {
         startActivityForResult(intent, BATTLE_ACTIVITY_CODE);
     }
-
+    private void startRankingActivity() {
+        Intent intent = new Intent(this, RankingActivity.class);
+        startActivity(intent);
+    }
     private void startInfoActivity() {
         Intent intent = new Intent(this, InfoActivity.class);
         intent.putExtra(AppConstants.FROM_MAIN_MENU, true);
@@ -246,6 +249,10 @@ public class MenuActivity extends AppCompatActivity {
     public void onOptionsScreenClick() {
         startOptionsActivity();
 
+    }
+    @OnClick(R.id.ranking_btn)
+    public void onRankingScreenClick() {
+        startRankingActivity();
     }
 
     @OnClick(R.id.info_btn)

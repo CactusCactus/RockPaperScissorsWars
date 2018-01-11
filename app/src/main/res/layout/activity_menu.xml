@@ -92,7 +92,13 @@
             android:backgroundTint="@color/light_red"
             android:text="@string/settings"
             android:textColor="@color/white" />
-
+        <Button
+            android:id="@+id/ranking_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_red"
+            android:text="@string/ranking"
+            android:textColor="@color/white" />
         <Button
             android:id="@+id/info_btn"
             android:layout_width="match_parent"
