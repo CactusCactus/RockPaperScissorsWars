@@ -225,10 +225,12 @@ public class MenuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BATTLE_ACTIVITY_CODE) {
             updatePlayer();
-            Battle finishedBattle = Parcels.unwrap(data.getParcelableExtra(AppConstants.BATTLE_PARCEL));
-            boolean isFirstPlayer = data.getBooleanExtra(AppConstants.FIRST_PLAYER_EXTRA, false);
-            FirebaseDAO.deleteBattle(finishedBattle);
-            AftermatchDialog.create(this, finishedBattle, isFirstPlayer).show();
+            if(data != null) {
+                Battle finishedBattle = Parcels.unwrap(data.getParcelableExtra(AppConstants.BATTLE_PARCEL));
+                boolean isFirstPlayer = data.getBooleanExtra(AppConstants.FIRST_PLAYER_EXTRA, false);
+                FirebaseDAO.deleteBattle(finishedBattle);
+                AftermatchDialog.create(this, finishedBattle, isFirstPlayer).show();
+            }
 
         }
     }

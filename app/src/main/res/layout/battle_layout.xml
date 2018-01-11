@@ -34,17 +34,6 @@
                 android:layout_width="94dp"
                 android:layout_height="94dp" />
         </LinearLayout>
-        <TextView
-            android:id="@+id/game_timer"
-            android:padding="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00"
-            android:layout_weight="0.1"
-            android:gravity="center"
-            android:background="@color/light_gray"
-            android:textColor="@color/white"
-            android:textSize="20sp"/>
     </LinearLayout>
     <TextView
         android:id="@+id/main_label"

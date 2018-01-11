@@ -174,7 +174,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentBattle = dataSnapshot.getValue(Battle.class);
-                if (currentBattle != null) {
+                if (currentBattle != null && currentBattle.getLoser() == null) {
                     playerUser = isFirstPlayer ? currentBattle.getFirstPlayer() : currentBattle.getSecondPlayer(); //Potrzebne?
                     enemyUser = isFirstPlayer ? currentBattle.getSecondPlayer() : currentBattle.getFirstPlayer(); //Potrzebne?
                     movePossible = isMovePossible();
@@ -182,7 +182,11 @@ public class GameActivity extends AppCompatActivity {
                     toggleButtonsLock(movePossible);
                     calculateVictory();
                 } else {
-                    //finish();
+                    Intent intent = new Intent();
+                    intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(currentBattle));
+                    intent.putExtra(AppConstants.FIRST_PLAYER_EXTRA, isFirstPlayer);
+                    GameActivity.this.setResult(441, intent);
+                    GameActivity.this.finish();
                 }
             }
 
@@ -199,42 +203,7 @@ public class GameActivity extends AppCompatActivity {
         return (isFirstPlayer && currentBattle.getFirstPlayerMove() == null) || (!isFirstPlayer && currentBattle.getSecondPlayerMove() == null);
     }
 
-    @OnClick(R.id.player_rock_btn)
-    public void onRockBtnClick() {
-        if (isFirstPlayer) {
-            currentBattle.setFirstPlayerMove(AttackType.ROCK);
-        } else {
-            currentBattle.setSecondPlayerMove(AttackType.ROCK);
-        }
-        FirebaseDAO.updateBattle(currentBattle);
-        toggleButtonsLock(false);
-    }
 
-    @OnClick(R.id.player_paper_btn)
-    public void onPaperBtnClick() {
-        if (isFirstPlayer) {
-            currentBattle.setFirstPlayerMove(AttackType.PAPER);
-        } else {
-            currentBattle.setSecondPlayerMove(AttackType.PAPER);
-        }
-        FirebaseDAO.updateBattle(currentBattle);
-        toggleButtonsLock(false);
-    }
-
-    @OnClick(R.id.player_scissors_btn)
-    public void onScissorsBtnClick() {
-        if (isFirstPlayer) {
-            currentBattle.setFirstPlayerMove(AttackType.SCISSORS);
-        } else {
-            currentBattle.setSecondPlayerMove(AttackType.SCISSORS);
-        }
-        FirebaseDAO.updateBattle(currentBattle);
-        toggleButtonsLock(false);
-    }
-    @OnClick(R.id.quit_btn)
-    public void onQuitBtnClick() {
-        onBackPressed();
-    }
     private void calculateVictory() {
         if (currentBattle.getFirstPlayerMove() != null && currentBattle.getSecondPlayerMove() != null) {
             AttackType enemyAttackType = isFirstPlayer ? currentBattle.getSecondPlayerMove() : currentBattle.getFirstPlayerMove();
@@ -420,7 +389,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        FirebaseDAO.deleteBattle(currentBattle);
+        if(currentBattle != null) {
+            if (currentBattle.getLoser() == null) {
+                currentBattle.setLoser(isFirstPlayer ? currentBattle.getFirstPlayer() : currentBattle.getSecondPlayer());
+                currentBattle.setWinner(isFirstPlayer ? currentBattle.getSecondPlayer() : currentBattle.getFirstPlayer());
+                FirebaseDAO.updateBattle(currentBattle);
+            }
+        }
     }
     private String getPlayerHealth() {
         return String.valueOf(isFirstPlayer ? currentBattle.getFirstPlayerHp() : currentBattle.getSecondPlayerHp() + "/" +
@@ -429,5 +404,41 @@ public class GameActivity extends AppCompatActivity {
     private String getEnemyHealth() {
         return String.valueOf(isFirstPlayer ? currentBattle.getSecondPlayerHp() : currentBattle.getFirstPlayerHp()) + "/" +
                 String.valueOf(isFirstPlayer ? currentBattle.getSecondPlayer().getHealth() : currentBattle.getFirstPlayer().getHealth());
+    }
+    @OnClick(R.id.player_rock_btn)
+    public void onRockBtnClick() {
+        if (isFirstPlayer) {
+            currentBattle.setFirstPlayerMove(AttackType.ROCK);
+        } else {
+            currentBattle.setSecondPlayerMove(AttackType.ROCK);
+        }
+        FirebaseDAO.updateBattle(currentBattle);
+        toggleButtonsLock(false);
+    }
+
+    @OnClick(R.id.player_paper_btn)
+    public void onPaperBtnClick() {
+        if (isFirstPlayer) {
+            currentBattle.setFirstPlayerMove(AttackType.PAPER);
+        } else {
+            currentBattle.setSecondPlayerMove(AttackType.PAPER);
+        }
+        FirebaseDAO.updateBattle(currentBattle);
+        toggleButtonsLock(false);
+    }
+
+    @OnClick(R.id.player_scissors_btn)
+    public void onScissorsBtnClick() {
+        if (isFirstPlayer) {
+            currentBattle.setFirstPlayerMove(AttackType.SCISSORS);
+        } else {
+            currentBattle.setSecondPlayerMove(AttackType.SCISSORS);
+        }
+        FirebaseDAO.updateBattle(currentBattle);
+        toggleButtonsLock(false);
+    }
+    @OnClick(R.id.quit_btn)
+    public void onQuitBtnClick() {
+        onBackPressed();
     }
 }
