@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import com.jakub.rockpaperscissorswars.config.Config;
 import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AttackType;
+import com.jakub.rockpaperscissorswars.constants.Result;
 import com.jakub.rockpaperscissorswars.models.User;
 
 import java.util.Locale;
@@ -20,43 +21,43 @@ import java.util.Locale;
  */
 
 public class Utils {
-    public static int whoWon(AttackType first, AttackType second) {
+    public static Result whoWon(AttackType first, AttackType second) {
         switch (first) {
             case ROCK:
                 switch (second) {
                     case ROCK:
-                        return 0;
+                        return Result.DRAW;
                     case PAPER:
-                        return -1;
+                        return Result.LOSE;
                     case SCISSORS:
-                        return 1;
+                        return Result.WIN;
                     default:
-                        return 0;
+                        return Result.DRAW;
                 }
             case PAPER:
                 switch (second) {
                     case ROCK:
-                        return 1;
+                        return Result.WIN;
                     case PAPER:
-                        return 0;
+                        return Result.DRAW;
                     case SCISSORS:
-                        return -1;
+                        return Result.LOSE;
                     default:
-                        return 0;
+                        return Result.DRAW;
                 }
             case SCISSORS:
                 switch (second) {
                     case ROCK:
-                        return -1;
+                        return Result.LOSE;
                     case PAPER:
-                        return 1;
+                        return Result.WIN;
                     case SCISSORS:
-                        return 0;
+                        return Result.DRAW;
                     default:
-                        return 0;
+                        return Result.DRAW;
                 }
             default:
-                return 0;
+                return Result.DRAW;
         }
     }
     public static int getDamage(User user, AttackType attackType) {

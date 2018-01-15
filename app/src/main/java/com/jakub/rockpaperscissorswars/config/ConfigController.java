@@ -19,17 +19,22 @@ public class ConfigController {
     }
 
     public static void syncConfig(final ConfigListener listener){
-        DatabaseReference configRef = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_CONFIG);
+        DatabaseReference configRef = FirebaseDatabase.getInstance()
+                .getReference().child(AppConstants.DB_CONFIG);
         configRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 config = dataSnapshot.getValue(Config.class);
-                listener.onConfigReady();
+                if(config != null) {
+                    listener.onConfigReady();
+                } else {
+                    listener.onConfigFail();
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                listener.onConfigFail();
             }
         });
     }

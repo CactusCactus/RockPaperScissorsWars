@@ -71,7 +71,8 @@ public class MenuActivity extends AppCompatActivity {
                 final Intent intent = new Intent(MenuActivity.this, GameActivity.class);
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Battle battle = child.getValue(Battle.class);
-                    if (battle != null && !battle.getFirstPlayer().getUsername().equals(playerUser.getUsername()) && battle.getSecondPlayer() == null) {
+                    if (battle != null && !battle.getFirstPlayer().getUsername().equals(playerUser.getUsername())
+                            && battle.getSecondPlayer() == null) {
                         battle.setSecondPlayer(playerUser);
                         FirebaseDAO.updateBattle(battle);
                         intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
@@ -97,7 +98,8 @@ public class MenuActivity extends AppCompatActivity {
                 final Intent intent = new Intent(MenuActivity.this, GameActivity.class);
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Battle battle = child.getValue(Battle.class);
-                    if (battle != null && battle.getFirstPlayer().getUsername().equals(playerUser.getUsername()) && battle.getSecondPlayer() != null) {
+                    if (battle != null && battle.getFirstPlayer().getUsername().equals(playerUser.getUsername())
+                            && battle.getSecondPlayer() != null) {
                         intent.putExtra(AppConstants.BATTLE_PARCEL, Parcels.wrap(battle));
                         intent.putExtra(AppConstants.PLAYER_PARCEL, Parcels.wrap(playerUser));
                         battleDatabaseRef.removeEventListener(this);
@@ -147,7 +149,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private void updatePlayer() {
         rootLayout.addView(loadingScreen);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS).child(playerUser.getUsername());
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference().child(AppConstants.DB_USERS).child(playerUser.getUsername());
         reference.addListenerForSingleValueEvent(updatePlayerListener);
     }
 

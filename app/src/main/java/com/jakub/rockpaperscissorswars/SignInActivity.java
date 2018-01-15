@@ -78,9 +78,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         loadingScreen = new LoadingScreen(this);
         initSignIn();
     }
-    private void initConfig() {
 
-    }
     private void setLanguage() {
         String lang = getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).getString(AppConstants.USER_LANG, Locale.getDefault().getLanguage());
         Utils.setLocale(lang, this);
@@ -179,6 +177,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onConfigReady() {
                         startActivity(finalIntent);
+                        rootLayout.removeView(loadingScreen);
+                    }
+
+                    @Override
+                    public void onConfigFail() {
+                        Snackbar.make(startButton, R.string.error_db_connection, Snackbar.LENGTH_SHORT).show();
+                        rootLayout.removeView(loadingScreen);
                     }
                 });
             }

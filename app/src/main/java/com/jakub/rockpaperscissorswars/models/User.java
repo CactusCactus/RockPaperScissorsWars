@@ -5,10 +5,7 @@ import com.jakub.rockpaperscissorswars.constants.AppConstants;
 
 import org.parceler.Parcel;
 
-/**
- * Created by Emil on 2018-01-06.
- */
-@Parcel(Parcel.Serialization.BEAN)
+@Parcel(Parcel.Serialization.FIELD)
 public class User {
     private String email;
     private String username;

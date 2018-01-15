@@ -55,9 +55,12 @@ public class OptionsActivity extends AppCompatActivity {
                     String lang = getResources().getStringArray(R.array.lang_codes_array)[position];
                     Utils.setLocale(lang, getApplicationContext());
                     Snackbar.make(langSpinner, R.string.quit_to_apply, Snackbar.LENGTH_LONG).show();
-                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putBoolean(AppConstants.LANG_CHANGED_MENU, true).apply();
-                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putBoolean(AppConstants.LANG_CHANGED_SIGNIN, true).apply();
-                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit().putString(AppConstants.USER_LANG, lang).apply();
+                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit()
+                            .putBoolean(AppConstants.LANG_CHANGED_MENU, true).apply();
+                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit()
+                            .putBoolean(AppConstants.LANG_CHANGED_SIGNIN, true).apply();
+                    getSharedPreferences(AppConstants.SHARED_PREF, MODE_PRIVATE).edit()
+                            .putString(AppConstants.USER_LANG, lang).apply();
                 }
                 firstSelect = false;
             }

@@ -95,7 +95,7 @@ public class WarriorActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                rootView.removeView(loadingScreen);//TODO
+                rootView.removeView(loadingScreen);
 
             }
         };

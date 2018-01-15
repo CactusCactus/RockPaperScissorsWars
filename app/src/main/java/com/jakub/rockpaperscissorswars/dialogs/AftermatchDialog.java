@@ -17,6 +17,7 @@ import com.jakub.rockpaperscissorswars.config.Config;
 import com.jakub.rockpaperscissorswars.config.ConfigController;
 import com.jakub.rockpaperscissorswars.constants.AppConstants;
 import com.jakub.rockpaperscissorswars.constants.Result;
+import com.jakub.rockpaperscissorswars.dao.FirebaseDAO;
 import com.jakub.rockpaperscissorswars.models.Battle;
 import com.jakub.rockpaperscissorswars.models.User;
 import com.jakub.rockpaperscissorswars.utils.Utils;
@@ -98,11 +99,10 @@ public class AftermatchDialog extends Dialog {
         player.setLvl(newLvl);
         player.setExperience(newExp);
         player.setVictories(player.getVictories() + 1);
-        FirebaseDatabase.getInstance().getReference().child(AppConstants.DB_USERS).child(player.getUsername()).setValue(player);
+        FirebaseDAO.updatePlayer(player);
     }
 
     private void displayExp(final int startExp, final int increase, int playerLvl) {
-        Config config = ConfigController.getConfig();
         final int max = Utils.getExpToLvl(playerLvl);
         currentLvlTv.setText(String.valueOf(playerLvl));
         nextLevelTv.setText(String.valueOf(playerLvl + 1));

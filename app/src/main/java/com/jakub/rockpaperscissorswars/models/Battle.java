@@ -22,6 +22,7 @@ public class Battle {
     private User winner;
     @PropertyName("loser")
     private User loser;
+    private int randomNumber;
 
     public Battle() {
     }
@@ -31,6 +32,7 @@ public class Battle {
         this.secondPlayer = secondPlayer;
         this.firstPlayerHp = firstPlayer.getHealth();
         this.secondPlayerHp = secondPlayer != null ? secondPlayer.getHealth() : 0;
+        this.randomNumber = 0;
     }
     @PropertyName("firstPlayer")
     public User getFirstPlayer() {
@@ -98,4 +100,13 @@ public class Battle {
     public void setLoser(User loser) {
         this.loser = loser;
     }
+    @PropertyName("randomNumber")
+    public int getRandomNumber() {
+        return randomNumber;
+    }
+    @PropertyName("randomNumber")
+    public void setRandomNumber(int randomNumber) {
+        this.randomNumber = randomNumber;
+    }
+
 }
